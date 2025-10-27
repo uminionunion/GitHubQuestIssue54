@@ -6,14 +6,17 @@ import { Dialog, DialogTrigger } from '@/components/ui/dialog';
 import { HostPantryForm } from './host-pantry-form';
 import { PantryMap } from './map';
 import { Pantry } from './types';
-import { initialPantries } from './initial-pantries';
 
-export function HomePage() {
-  const [pantries, setPantries] = React.useState<Pantry[]>(initialPantries);
+interface HomePageProps {
+  pantries: Pantry[];
+  addPantry: (pantryData: Omit<Pantry, 'id'>) => Pantry;
+}
+
+export function HomePage({ pantries, addPantry }: HomePageProps) {
   const [isModalOpen, setIsModalOpen] = React.useState(false);
 
-  const addPantry = (pantryData: Omit<Pantry, 'id'>) => {
-    setPantries(prev => [...prev, { ...pantryData, id: Date.now() }]);
+  const handleAddPantry = (pantryData: Omit<Pantry, 'id'>) => {
+    addPantry(pantryData);
     setIsModalOpen(false);
   };
 
@@ -40,7 +43,7 @@ export function HomePage() {
             <DialogTrigger asChild>
               <Button size="lg" variant="secondary" className="transition-transform transform hover:scale-105">Host a Pantry</Button>
             </DialogTrigger>
-            <HostPantryForm onSubmit={addPantry} />
+            <HostPantryForm onSubmit={handleAddPantry} />
           </Dialog>
         </div>
         <Card className="w-full max-w-4xl mx-auto text-left shadow-2xl">

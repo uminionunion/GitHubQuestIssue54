@@ -6,4 +6,5 @@ export interface Pantry {
   notes: string;
   lat: number;
   lng: number;
+  hours: string;
 }

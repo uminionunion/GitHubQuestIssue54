@@ -23,15 +23,16 @@ export function HostPantryForm({ onSubmit }: HostPantryFormProps) {
     const formData = new FormData(e.currentTarget);
     const name = formData.get('name') as string;
     const address = formData.get('address') as string;
+    const hours = formData.get('hours') as string;
     const notes = formData.get('notes') as string;
     const lat = parseFloat(formData.get('lat') as string);
     const lng = parseFloat(formData.get('lng') as string);
 
-    if (name && address && !isNaN(lat) && !isNaN(lng)) {
-      onSubmit({ name, address, notes, lat, lng });
+    if (name && address && hours && !isNaN(lat) && !isNaN(lng)) {
+      onSubmit({ name, address, notes, lat, lng, hours });
     } else {
       // Basic validation feedback
-      alert('Please fill out all fields correctly, including latitude and longitude.');
+      alert('Please fill out all required fields correctly, including latitude and longitude.');
     }
   };
 
@@ -49,25 +50,31 @@ export function HostPantryForm({ onSubmit }: HostPantryFormProps) {
             <Label htmlFor="name" className="text-right">
               Pantry Name
             </Label>
-            <Input id="name" name="name" placeholder="e.g. Community Food Hub" className="col-span-3" />
+            <Input id="name" name="name" placeholder="e.g. Community Food Hub" className="col-span-3" required />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="address" className="text-right">
               Address
             </Label>
-            <Input id="address" name="address" placeholder="123 Main St, Anytown, USA" className="col-span-3" />
+            <Input id="address" name="address" placeholder="123 Main St, Anytown, USA" className="col-span-3" required />
+          </div>
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="hours" className="text-right">
+              Hours
+            </Label>
+            <Input id="hours" name="hours" placeholder="e.g. M-F 9am-5pm" className="col-span-3" required />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="lat" className="text-right">
               Latitude
             </Label>
-            <Input id="lat" name="lat" type="number" step="any" placeholder="e.g. 40.7128" className="col-span-3" />
+            <Input id="lat" name="lat" type="number" step="any" placeholder="e.g. 40.7128" className="col-span-3" required />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="lng" className="text-right">
               Longitude
             </Label>
-            <Input id="lng" name="lng" type="number" step="any" placeholder="e.g. -74.0060" className="col-span-3" />
+            <Input id="lng" name="lng" type="number" step="any" placeholder="e.g. -74.0060" className="col-span-3" required />
           </div>
           <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="notes" className="text-right">
