@@ -38,7 +38,7 @@ export function PantryMap({ pantries = [] }: PantryMapProps) {
       center={[39.8283, -98.5795]}
       zoom={4}
       scrollWheelZoom={true}
-      className="h-full w-full rounded-lg z-0"
+      className="h-full w-full z-0"
     >
       <TileLayer
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -47,11 +47,11 @@ export function PantryMap({ pantries = [] }: PantryMapProps) {
       {pantries.map(pantry => (
         <Marker key={pantry.id} position={[pantry.lat, pantry.lng]}>
           <Popup>
-            <div className="font-sans">
+            <div className="font-sans bg-black text-white p-2 rounded-md">
               <h3 className="font-bold text-base mb-1">{pantry.name}</h3>
-              <p className="text-sm text-slate-600 m-0">{pantry.address}</p>
-              <p className="text-sm text-slate-800 mt-2 m-0">{pantry.notes}</p>
-              <Button size="sm" className="mt-2 w-full" onClick={() => handleMarkerClick(pantry.id)}>
+              <p className="text-sm text-slate-300 m-0">{pantry.address}</p>
+              <p className="text-sm text-slate-100 mt-2 m-0">{pantry.notes}</p>
+              <Button variant="outline" size="sm" className="mt-2 w-full text-white border-white hover:bg-gray-800 hover:text-white" onClick={() => handleMarkerClick(pantry.id)}>
                 View Details
               </Button>
             </div>

@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { HomePage } from './pages/home/home-page';
+import { LandingPage } from './pages/landing/landing-page';
 import { PantryDetailsPage } from './pages/pantry-details/pantry-details-page';
 import { initialPantries } from './pages/home/initial-pantries';
 import { Pantry } from './pages/home/types';
@@ -18,7 +18,7 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage pantries={pantries} addPantry={addPantry} />} />
+        <Route path="/" element={<LandingPage pantries={pantries} addPantry={addPantry} />} />
         <Route path="/pantry/:id" element={<PantryDetailsPage pantries={pantries} />} />
       </Routes>
     </Router>
