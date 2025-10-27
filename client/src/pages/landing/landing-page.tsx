@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogTrigger, DialogContent } from '@/components/ui/dialog';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { TheFoodPantryFeature } from '../pantry-feature/the-food-pantry-feature';
 import { Pantry } from '../home/types';
 
@@ -18,6 +18,9 @@ export function LandingPage({ pantries, addPantry }: LandingPageProps) {
           <Button size="lg" variant="secondary">#13UnionSupportV001</Button>
         </DialogTrigger>
         <DialogContent className="max-w-none w-[90vw] h-[90vh] p-0 !rounded-lg overflow-hidden">
+          <DialogHeader className="sr-only">
+            <DialogTitle>Pantry Finder Feature</DialogTitle>
+          </DialogHeader>
           <TheFoodPantryFeature pantries={pantries} addPantry={addPantry} />
         </DialogContent>
       </Dialog>
