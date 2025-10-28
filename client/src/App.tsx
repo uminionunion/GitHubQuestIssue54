@@ -9,11 +9,11 @@ function App() {
   React.useEffect(() => {
     fetch('/api/pantries')
       .then(res => res.json())
-      .then(data => setPantries(data))
+      .then(data => setPantries(data.filter(p => p.deleted === 0)))
       .catch(console.error);
   }, []);
 
-  const addPantry = async (pantryData: Omit<Pantry, 'id'>) => {
+  const addPantry = async (pantryData: Omit<Pantry, 'id' | 'deleted'>) => {
     try {
       const response = await fetch('/api/pantries', {
         method: 'POST',

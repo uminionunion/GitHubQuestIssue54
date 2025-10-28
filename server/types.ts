@@ -1,5 +1,6 @@
 
 export type PantryType = 'food' | 'clothing' | 'resource' | 'library';
+export type RepeatingType = 'one-time' | 'daily' | 'weekly' | 'weekendly' | 'monthly' | 'idk';
 
 export interface Pantry {
   id?: number;
@@ -10,6 +11,8 @@ export interface Pantry {
   lng: number;
   hours: string;
   type: PantryType;
+  repeating: RepeatingType;
+  deleted?: 0 | 1;
 }
 
 export interface Politician {

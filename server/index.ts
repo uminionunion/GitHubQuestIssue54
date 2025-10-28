@@ -16,7 +16,7 @@ app.use(express.urlencoded({ extended: true }));
 // API endpoints
 app.get('/api/pantries', async (req, res) => {
   try {
-    const pantries = await db.selectFrom('pantries').selectAll().execute();
+    const pantries = await db.selectFrom('pantries').selectAll().where('deleted', '=', 0).execute();
     res.json(pantries);
   } catch (error) {
     console.error('Failed to get pantries:', error);
@@ -26,8 +26,8 @@ app.get('/api/pantries', async (req, res) => {
 
 app.post('/api/pantries', async (req, res) => {
   try {
-    const newPantry: Omit<Pantry, 'id'> = req.body;
-    const result = await db.insertInto('pantries').values(newPantry).returningAll().executeTakeFirstOrThrow();
+    const newPantry: Omit<Pantry, 'id' | 'deleted'> = req.body;
+    const result = await db.insertInto('pantries').values({ ...newPantry, deleted: 0 }).returningAll().executeTakeFirstOrThrow();
     res.status(201).json(result);
   } catch (error) {
     console.error('Failed to add pantry:', error);

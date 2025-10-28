@@ -11,12 +11,12 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Pantry, PantryType } from './types';
+import { Pantry, PantryType, RepeatingType } from './types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Wand2 } from 'lucide-react';
 
 interface HostPantryFormProps {
-  onSubmit: (pantry: Omit<Pantry, 'id'>) => void;
+  onSubmit: (pantry: Omit<Pantry, 'id' | 'deleted'>) => void;
   isDialog?: boolean;
 }
 
@@ -25,6 +25,15 @@ const pantryTypes: { id: PantryType; label: string }[] = [
     { id: 'clothing', label: 'Clothing Pantry?' },
     { id: 'resource', label: 'Resource' },
     { id: 'library', label: 'Mini-Library/Billboard?' },
+];
+
+const repeatingTypes: { id: RepeatingType; label: string }[] = [
+    { id: 'one-time', label: 'One-Time' },
+    { id: 'daily', label: 'Daily' },
+    { id: 'weekly', label: 'Weekly' },
+    { id: 'weekendly', label: 'Weekendly' },
+    { id: 'monthly', label: 'Monthly' },
+    { id: 'idk', label: 'IDK' },
 ];
 
 export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProps) {
@@ -62,13 +71,14 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
     const hours = formData.get('hours') as string;
     const notes = formData.get('notes') as string;
     const type = formData.get('type') as PantryType;
+    const repeating = formData.get('repeating') as RepeatingType;
     const latVal = parseFloat(lat);
     const lngVal = parseFloat(lng);
 
-    if (name && addressForLookup && hours && type && !isNaN(latVal) && !isNaN(lngVal)) {
-      onSubmit({ name, address: addressForLookup, notes, lat: latVal, lng: lngVal, hours, type });
+    if (name && addressForLookup && hours && type && repeating && !isNaN(latVal) && !isNaN(lngVal)) {
+      onSubmit({ name, address: addressForLookup, notes, lat: latVal, lng: lngVal, hours, type, repeating });
     } else {
-      alert('Please fill out all required fields correctly, including type, latitude and longitude.');
+      alert('Please fill out all required fields correctly.');
     }
   };
 
@@ -152,13 +162,24 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
             className="col-span-3"
           />
         </div>
+
+        <div className="grid grid-cols-4 items-start gap-4">
+            <Label className="text-right pt-2">Repeating?</Label>
+            <RadioGroup name="repeating" className="col-span-3 grid grid-cols-3 gap-2" required>
+                {repeatingTypes.map(type => (
+                    <div key={type.id} className="flex items-center space-x-2">
+                        <RadioGroupItem value={type.id} id={`repeating-${type.id}`} />
+                        <Label htmlFor={`repeating-${type.id}`}>{type.label}</Label>
+                    </div>
+                ))}
+            </RadioGroup>
+        </div>
       </div>
-      <div className="mb-4 text-center">
+      
+      <DialogFooter className="flex-row justify-between items-center">
         <a href="https://uminion.com/product/sister-union-13-2024-poster/" target="_blank" rel="noopener noreferrer" className="text-sm text-primary underline">
-          Get a Poster- Help Support UnionSupport#13 So It Can Do More
+          Get a Poster- Help UnionSupport#13 Do More
         </a>
-      </div>
-      <DialogFooter>
         <Button type="submit">Submit</Button>
       </DialogFooter>
     </form>

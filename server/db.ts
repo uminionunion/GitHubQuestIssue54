@@ -18,6 +18,8 @@ interface PantryTable {
   lng: number;
   hours: string;
   type: 'food' | 'clothing' | 'resource' | 'library';
+  repeating: 'one-time' | 'daily' | 'weekly' | 'weekendly' | 'monthly' | 'idk';
+  deleted: 0 | 1;
 }
 
 interface PoliticianTable {

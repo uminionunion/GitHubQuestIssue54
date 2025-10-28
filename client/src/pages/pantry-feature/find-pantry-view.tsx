@@ -7,7 +7,9 @@ import { Button } from '@/components/ui/button';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { countries } from './countries-data';
 
-const pantryTypes: { id: PantryType | 'candidates' | 'politicians'; label: string }[] = [
+export type Category = PantryType | 'candidates' | 'politicians';
+
+const categoryTypes: { id: Category; label: string }[] = [
     { id: 'food', label: 'Food Pantry?' },
     { id: 'clothing', label: 'Clothing Pantry?' },
     { id: 'resource', label: 'Resource' },
@@ -16,9 +18,27 @@ const pantryTypes: { id: PantryType | 'candidates' | 'politicians'; label: strin
     { id: 'politicians', label: 'Politicians who let the WH Fall still in office.' },
 ];
 
-export function FindPantryView() {
+const topCountries = ['Canada', 'Mexico', 'USA'];
+const sortedCountryList = [
+  ...topCountries,
+  ...Object.keys(countries).filter(c => !topCountries.includes(c)).sort()
+];
+
+interface FindPantryViewProps {
+  selectedCategories: Category[];
+  onCategoryChange: (categories: Category[]) => void;
+}
+
+export function FindPantryView({ selectedCategories, onCategoryChange }: FindPantryViewProps) {
   const [selectedCountry, setSelectedCountry] = React.useState<string | null>(null);
   const [selectedState, setSelectedState] = React.useState<string | null>(null);
+
+  const handleCategoryChange = (categoryId: Category, checked: boolean) => {
+    const newCategories = checked
+      ? [...selectedCategories, categoryId]
+      : selectedCategories.filter(c => c !== categoryId);
+    onCategoryChange(newCategories);
+  };
 
   const handleCountryChange = (country: string) => {
     setSelectedCountry(country);
@@ -29,7 +49,6 @@ export function FindPantryView() {
     setSelectedState(state);
   };
 
-  const countryList = Object.keys(countries).sort();
   const states = selectedCountry ? countries[selectedCountry] : [];
 
   return (
@@ -45,9 +64,13 @@ export function FindPantryView() {
         <div>
           <h4 className="font-medium mb-2">Category</h4>
           <div className="grid grid-cols-2 gap-2">
-            {pantryTypes.map(type => (
+            {categoryTypes.map(type => (
               <div key={type.id} className="flex items-center space-x-2">
-                <Checkbox id={`filter-type-${type.id}`} />
+                <Checkbox 
+                  id={`filter-type-${type.id}`} 
+                  checked={selectedCategories.includes(type.id)}
+                  onCheckedChange={(checked) => handleCategoryChange(type.id, !!checked)}
+                />
                 <Label htmlFor={`filter-type-${type.id}`}>{type.label}</Label>
               </div>
             ))}
@@ -58,7 +81,7 @@ export function FindPantryView() {
           <h4 className="font-medium mb-2">Country</h4>
           <div className="max-h-48 overflow-y-auto space-y-2 p-2 border rounded-md">
             <RadioGroup value={selectedCountry || ''} onValueChange={handleCountryChange}>
-              {countryList.map(country => (
+              {sortedCountryList.map(country => (
                 <div key={country} className="flex items-center space-x-2">
                   <RadioGroupItem value={country} id={`country-${country}`} />
                   <Label htmlFor={`country-${country}`}>{country}</Label>

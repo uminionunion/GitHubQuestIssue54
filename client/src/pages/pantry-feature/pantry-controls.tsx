@@ -3,19 +3,21 @@ import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { HostPantryForm } from '../home/host-pantry-form';
 import { Pantry } from '../home/types';
-import { FindPantryView } from './find-pantry-view';
+import { FindPantryView, Category } from './find-pantry-view';
 import { PantryDetailsView } from './pantry-details-view';
 
 interface PantryControlsProps {
-  addPantry: (pantryData: Omit<Pantry, 'id'>) => Promise<Pantry | null>;
+  addPantry: (pantryData: Omit<Pantry, 'id' | 'deleted'>) => Promise<Pantry | null>;
   activeView: 'find' | 'host' | 'details';
   setActiveView: (view: 'find' | 'host' | 'details') => void;
   selectedPantry: Pantry | null;
+  selectedCategories: Category[];
+  onCategoryChange: (categories: Category[]) => void;
 }
 
-export function PantryControls({ addPantry, activeView, setActiveView, selectedPantry }: PantryControlsProps) {
+export function PantryControls({ addPantry, activeView, setActiveView, selectedPantry, selectedCategories, onCategoryChange }: PantryControlsProps) {
 
-  const handleAddPantry = async (pantryData: Omit<Pantry, 'id'>) => {
+  const handleAddPantry = async (pantryData: Omit<Pantry, 'id' | 'deleted'>) => {
     const newPantry = await addPantry(pantryData);
     if (newPantry) {
       setActiveView('find');
@@ -25,13 +27,13 @@ export function PantryControls({ addPantry, activeView, setActiveView, selectedP
   const renderActiveView = () => {
     switch (activeView) {
       case 'find':
-        return <FindPantryView />;
+        return <FindPantryView selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} />;
       case 'host':
         return <HostPantryForm onSubmit={handleAddPantry} isDialog={false} />;
       case 'details':
         return selectedPantry ? <PantryDetailsView pantry={selectedPantry} /> : <p>No pantry selected.</p>;
       default:
-        return <FindPantryView />;
+        return <FindPantryView selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} />;
     }
   };
 

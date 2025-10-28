@@ -1,3 +1,97 @@
+
+<!--
+AI PROMPT TO RECREATE THIS FEATURE IN HTML, CSS, JS, SQL, PHP:
+
+**Objective:** Create a web application feature called "PantryFinder" that allows users to find and submit information about various local resources like food pantries, clothing pantries, etc., displayed on an interactive map.
+
+**Technology Stack:**
+-   **Frontend:** HTML5, CSS3, JavaScript (ES6+). Use the Leaflet.js library for the map. No frameworks like React/Vue.
+-   **Backend:** PHP (latest stable version).
+-   **Database:** MySQL or MariaDB (using SQL).
+
+**Database Schema:**
+
+1.  **`pantries` table:**
+    -   `id` (INT, PRIMARY KEY, AUTO_INCREMENT)
+    -   `name` (VARCHAR(255), NOT NULL)
+    -   `address` (VARCHAR(255), NOT NULL)
+    -   `lat` (DECIMAL(10, 8), NOT NULL)
+    -   `lng` (DECIMAL(11, 8), NOT NULL)
+    -   `hours` (VARCHAR(255))
+    -   `notes` (TEXT)
+    -   `type` (ENUM('food', 'clothing', 'resource', 'library'), NOT NULL)
+    -   `repeating` (ENUM('one-time', 'daily', 'weekly', 'weekendly', 'monthly', 'idk'))
+    -   `deleted` (BOOLEAN, DEFAULT 0)
+    -   `created_at` (TIMESTAMP, DEFAULT CURRENT_TIMESTAMP)
+
+2.  **`politicians` table:**
+    -   `id` (INT, PRIMARY KEY, AUTO_INCREMENT)
+    -   `name` (VARCHAR(255), NOT NULL)
+    -   `office` (ENUM('House', 'Senate'), NOT NULL)
+    -   `state` (VARCHAR(2), NOT NULL)
+    -   `district` (INT, NULL)
+    -   `lat` (DECIMAL(10, 8), NOT NULL)
+    -   `lng` (DECIMAL(11, 8), NOT NULL)
+
+3.  **`candidates` table:**
+    -   `id` (INT, PRIMARY KEY, AUTO_INCREMENT)
+    -   `name` (VARCHAR(255), NOT NULL)
+    -   `office` (ENUM('House', 'Senate'), NOT NULL)
+    -   `state` (VARCHAR(2), NOT NULL)
+    -   `district` (INT, NULL)
+    -   `lat` (DECIMAL(10, 8), NOT NULL)
+    -   `lng` (DECIMAL(11, 8), NOT NULL)
+
+**Backend (PHP API Endpoints):**
+
+Create a simple RESTful API with PHP. All endpoints should return JSON.
+
+-   `GET /api/data.php`: A single endpoint to fetch all necessary data. Use a query parameter `type` (e.g., `?type=pantries`, `?type=politicians`). It should fetch non-deleted records from the corresponding table and echo the JSON-encoded result.
+-   `POST /api/pantry.php`: Handles new pantry submissions. It should receive pantry data, perform server-side validation, and insert it into the `pantries` table. Return the newly created pantry object as JSON.
+-   `GET /api/geocode.php`: Takes an `address` query parameter. Use a free geocoding service API (like OpenStreetMap Nominatim) to fetch latitude and longitude for the address and return it as JSON.
+
+**Frontend (HTML, CSS, JS):**
+
+**1. Main Page (`index.html`):**
+-   A clean, modern layout.
+-   Two main buttons: "Find a Pantry" and "#13UnionSupportV001".
+-   Below the buttons, a small, non-interactive preview of the map.
+-   Clicking any of these three elements opens a large modal window that covers most of the screen.
+
+**2. The Modal:**
+-   A two-column layout. The left 2/3 is the interactive map, the right 1/3 is the control panel.
+-   **Map (Left Side - Leaflet.js):**
+    -   Initialize Leaflet map centered on the USA.
+    -   Use OpenStreetMap as the tile layer.
+    -   Markers should have custom colors based on their type:
+        -   Food Pantry: Green
+        -   Clothing Pantry: Blue
+        -   Resource: Purple
+        -   Library/Billboard: Black
+        -   Politician (House): Dark Gray
+        -   Politician (Senate): Light Gray
+        -   Candidate: Gold (with a glowing CSS effect)
+    -   Clicking a marker opens a popup with its details (name, address, etc.).
+-   **Control Panel (Right Side):**
+    -   A main heading "PantryFinder".
+    -   Two buttons: "Find a Pantry" and "Know-of a Pantry?". These switch the view in the control panel below.
+    -   **"Find a Pantry" View:**
+        -   A "Category" section with checkboxes for all pantry types, plus "Candidates" and "Politicians".
+        -   A "Country" section with a radio button list of all countries in the world. "Canada", "Mexico", "USA" must be at the top, followed by an alphabetical list.
+        -   A "State/Province" section that appears and is populated when a country with states/provinces is selected.
+        -   A "Search" button.
+        -   **JavaScript Logic:** When category checkboxes are toggled, fetch the relevant data via the API and add/remove markers from the map. The map should only show markers for checked categories.
+    -   **"Host a Pantry" View (Form):**
+        -   A form with fields: Pantry Name, Address, Latitude, Longitude, Hours, Type (radio buttons), Notes, and a "Repeating?" section (radio buttons: "One-Time", "daily", "weekly", etc.).
+        -   The "Address" field should have a "magic wand" button next to it. When clicked, it takes the address text, calls the `/api/geocode.php` endpoint, and fills the Latitude/Longitude fields with the result.
+        -   At the bottom, next to the "Submit" button, include a hyperlink: "Get a Poster- Help UnionSupport#13 Do More".
+        -   **JavaScript Logic:** On form submission, gather the data, send it to `/api/pantry.php` using a POST request. On success, switch back to the "Find a Pantry" view and refresh the map markers to show the new entry.
+
+**Styling (CSS):**
+-   Implement a dark theme for the entire application, including the modal and Leaflet popups.
+-   Use modern styling for buttons, forms, and layout (flexbox/grid).
+-   Ensure the layout is responsive and works on both mobile and desktop screens.
+-->
 <!doctype html>
 <html lang="en">
   <head>
