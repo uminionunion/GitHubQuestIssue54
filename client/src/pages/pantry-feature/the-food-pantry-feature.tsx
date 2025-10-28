@@ -6,7 +6,7 @@ import { Pantry } from '../home/types';
 
 interface TheFoodPantryFeatureProps {
   pantries: Pantry[];
-  addPantry: (pantryData: Omit<Pantry, 'id'>) => Pantry;
+  addPantry: (pantryData: Omit<Pantry, 'id'>) => Promise<Pantry | null>;
 }
 
 export function TheFoodPantryFeature({ pantries, addPantry }: TheFoodPantryFeatureProps) {

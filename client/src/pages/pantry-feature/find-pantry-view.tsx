@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
-import { Button } from '@/components/ui/button';
+import { PantryType } from '../home/types';
 
 const northAmericanCountries = {
   'Canada': ['Alberta', 'British Columbia', 'Manitoba', 'New Brunswick', 'Newfoundland and Labrador', 'Nova Scotia', 'Ontario', 'Prince Edward Island', 'Quebec', 'Saskatchewan'],
@@ -36,6 +36,13 @@ const sortedOtherCountries = Object.keys(northAmericanCountries)
 
 const countryOrder = ['Canada', 'Mexico', 'USA', ...sortedOtherCountries];
 
+const pantryTypes: { id: PantryType; label: string }[] = [
+    { id: 'food', label: 'Food Pantry?' },
+    { id: 'clothing', label: 'Clothing Pantry?' },
+    { id: 'resource', label: 'Resource' },
+    { id: 'library', label: 'Mini-Library/Billboard?' },
+];
+
 export function FindPantryView() {
   const [selectedCountries, setSelectedCountries] = React.useState<string[]>([]);
 
@@ -53,8 +60,20 @@ export function FindPantryView() {
       </p>
       <div className="space-y-4">
         <div>
+          <h4 className="font-medium mb-2">Category</h4>
+          <div className="grid grid-cols-2 gap-2">
+            {pantryTypes.map(type => (
+              <div key={type.id} className="flex items-center space-x-2">
+                <Checkbox id={`filter-type-${type.id}`} />
+                <Label htmlFor={`filter-type-${type.id}`}>{type.label}</Label>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div>
           <h4 className="font-medium mb-2">Country</h4>
-          <div className="space-y-2">
+          <div className="max-h-48 overflow-y-auto space-y-2 p-2 border rounded-md">
             {countryOrder.map(country => (
               <div key={country} className="flex items-center space-x-2">
                 <Checkbox

@@ -1,16 +1,36 @@
 
 import * as React from 'react';
 import { LandingPage } from './pages/landing/landing-page';
-import { initialPantries } from './pages/home/initial-pantries';
 import { Pantry } from './pages/home/types';
 
 function App() {
-  const [pantries, setPantries] = React.useState<Pantry[]>(initialPantries);
+  const [pantries, setPantries] = React.useState<Pantry[]>([]);
 
-  const addPantry = (pantryData: Omit<Pantry, 'id'>) => {
-    const newPantry = { ...pantryData, id: Date.now() };
-    setPantries(prev => [...prev, newPantry]);
-    return newPantry;
+  React.useEffect(() => {
+    fetch('/api/pantries')
+      .then(res => res.json())
+      .then(data => setPantries(data))
+      .catch(console.error);
+  }, []);
+
+  const addPantry = async (pantryData: Omit<Pantry, 'id'>) => {
+    try {
+      const response = await fetch('/api/pantries', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(pantryData),
+      });
+      if (!response.ok) {
+        throw new Error('Failed to add pantry');
+      }
+      const newPantry = await response.json();
+      setPantries(prev => [...prev, newPantry]);
+      return newPantry;
+    } catch (error) {
+      console.error(error);
+      // Optionally, handle the error in the UI
+      return null;
+    }
   };
 
   // The router is removed as there is only one page now.

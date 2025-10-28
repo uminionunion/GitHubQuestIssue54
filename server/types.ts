@@ -2,7 +2,7 @@
 export type PantryType = 'food' | 'clothing' | 'resource' | 'library';
 
 export interface Pantry {
-  id: number;
+  id?: number;
   name: string;
   address: string;
   notes: string;

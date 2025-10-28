@@ -7,7 +7,7 @@ import { FindPantryView } from './find-pantry-view';
 import { PantryDetailsView } from './pantry-details-view';
 
 interface PantryControlsProps {
-  addPantry: (pantryData: Omit<Pantry, 'id'>) => Pantry;
+  addPantry: (pantryData: Omit<Pantry, 'id'>) => Promise<Pantry | null>;
   activeView: 'find' | 'host' | 'details';
   setActiveView: (view: 'find' | 'host' | 'details') => void;
   selectedPantry: Pantry | null;
@@ -15,9 +15,11 @@ interface PantryControlsProps {
 
 export function PantryControls({ addPantry, activeView, setActiveView, selectedPantry }: PantryControlsProps) {
 
-  const handleAddPantry = (pantryData: Omit<Pantry, 'id'>) => {
-    addPantry(pantryData);
-    setActiveView('find');
+  const handleAddPantry = async (pantryData: Omit<Pantry, 'id'>) => {
+    const newPantry = await addPantry(pantryData);
+    if (newPantry) {
+      setActiveView('find');
+    }
   };
 
   const renderActiveView = () => {
