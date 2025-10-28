@@ -1,10 +1,12 @@
 
 import { Kysely, SqliteDialect } from 'kysely';
 import Database from 'better-sqlite3';
-import { Pantry } from './types';
+import { Pantry, Politician, Candidate } from './types';
 
 interface DatabaseSchema {
   pantries: PantryTable;
+  politicians: PoliticianTable;
+  candidates: CandidateTable;
 }
 
 interface PantryTable {
@@ -16,6 +18,29 @@ interface PantryTable {
   lng: number;
   hours: string;
   type: 'food' | 'clothing' | 'resource' | 'library';
+}
+
+interface PoliticianTable {
+  id: number;
+  name: string;
+  office: 'House' | 'Senate';
+  state: string;
+  district: number | null;
+  party: string;
+  term_end_date: string;
+  lat: number;
+  lng: number;
+}
+
+interface CandidateTable {
+  id: number;
+  name: string;
+  office: 'House' | 'Senate';
+  state: string;
+  district: number | null;
+  party: string;
+  lat: number;
+  lng: number;
 }
 
 const dialect = new SqliteDialect({

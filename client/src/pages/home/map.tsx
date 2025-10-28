@@ -1,24 +1,26 @@
 
 import * as React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import { Pantry } from './types';
+import { Pantry, Politician, Candidate } from './types';
 import L from 'leaflet';
 import { Button } from '@/components/ui/button';
-import { getIconForPantry, getRandomIcon } from './marker-icons';
+import { getIconForPantry, getRandomIcon, getIconForPolitician, getIconForCandidate } from './marker-icons';
 
 interface PantryMapProps {
   pantries: Pantry[];
+  politicians?: Politician[];
+  candidates?: Candidate[];
   onViewDetails: (pantry: Pantry) => void;
   isPreview?: boolean;
 }
 
-export function PantryMap({ pantries = [], onViewDetails, isPreview = false }: PantryMapProps) {
+export function PantryMap({ pantries = [], politicians = [], candidates = [], onViewDetails, isPreview = false }: PantryMapProps) {
   const mapRef = React.useRef<L.Map>(null);
-  const markerRefs = React.useRef<{ [key: number]: L.Marker | null }>({});
+  const markerRefs = React.useRef<{ [key: string]: L.Marker | null }>({});
 
   const handleMarkerClick = (pantry: Pantry) => {
     if (isPreview) return;
-    const marker = markerRefs.current[pantry.id];
+    const marker = markerRefs.current[`pantry-${pantry.id}`];
     if (marker) {
       marker.setIcon(getRandomIcon(pantry.type));
     }
@@ -52,23 +54,23 @@ export function PantryMap({ pantries = [], onViewDetails, isPreview = false }: P
       />
       {pantries.map(pantry => (
         <Marker
-          key={pantry.id}
+          key={`pantry-${pantry.id}`}
           position={[pantry.lat, pantry.lng]}
           icon={getIconForPantry(pantry)}
-          ref={el => { if(el) markerRefs.current[pantry.id] = el }}
+          ref={el => { if(el) markerRefs.current[`pantry-${pantry.id}`] = el }}
           eventHandlers={{
             click: () => handleMarkerClick(pantry),
           }}
         >
           {!isPreview && (
             <Popup>
-              <div className="font-sans bg-black text-white p-2 rounded-md">
+              <div className="font-sans p-2 rounded-md">
                 <h3 className="font-bold text-base mb-1">{pantry.name}</h3>
-                <p className="text-sm text-slate-300 m-0">{pantry.address}</p>
-                <p className="text-sm text-slate-100 mt-2 m-0">{pantry.notes}</p>
+                <p className="text-sm text-muted-foreground m-0">{pantry.address}</p>
+                <p className="text-sm mt-2 m-0">{pantry.notes}</p>
                 <Button
                   size="sm"
-                  className="mt-2 w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  className="mt-2 w-full"
                   onClick={() => onViewDetails(pantry)}
                 >
                   View Details
@@ -76,6 +78,36 @@ export function PantryMap({ pantries = [], onViewDetails, isPreview = false }: P
               </div>
             </Popup>
           )}
+        </Marker>
+      ))}
+      {!isPreview && politicians.map(politician => (
+        <Marker
+          key={`politician-${politician.id}`}
+          position={[politician.lat, politician.lng]}
+          icon={getIconForPolitician(politician)}
+        >
+          <Popup>
+            <div className="font-sans p-2 rounded-md">
+              <h3 className="font-bold text-base mb-1">{politician.name}</h3>
+              <p className="text-sm m-0">{politician.office} for {politician.state}{politician.district ? `-${politician.district}` : ''}</p>
+              <p className="text-xs text-muted-foreground m-0">In office until: {politician.term_end_date}</p>
+            </div>
+          </Popup>
+        </Marker>
+      ))}
+      {!isPreview && candidates.map(candidate => (
+        <Marker
+          key={`candidate-${candidate.id}`}
+          position={[candidate.lat, candidate.lng]}
+          icon={getIconForCandidate(candidate)}
+        >
+          <Popup>
+            <div className="font-sans p-2 rounded-md">
+              <h3 className="font-bold text-base mb-1">{candidate.name}</h3>
+              <p className="text-sm m-0">Running for {candidate.office}</p>
+              <p className="text-sm m-0">{candidate.state}{candidate.district ? `-${candidate.district}` : ''}</p>
+            </div>
+          </Popup>
         </Marker>
       ))}
     </MapContainer>

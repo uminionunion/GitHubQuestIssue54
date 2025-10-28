@@ -59,15 +59,14 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const name = formData.get('name') as string;
-    const address = formData.get('address') as string;
     const hours = formData.get('hours') as string;
     const notes = formData.get('notes') as string;
     const type = formData.get('type') as PantryType;
     const latVal = parseFloat(lat);
     const lngVal = parseFloat(lng);
 
-    if (name && address && hours && type && !isNaN(latVal) && !isNaN(lngVal)) {
-      onSubmit({ name, address, notes, lat: latVal, lng: lngVal, hours, type });
+    if (name && addressForLookup && hours && type && !isNaN(latVal) && !isNaN(lngVal)) {
+      onSubmit({ name, address: addressForLookup, notes, lat: latVal, lng: lngVal, hours, type });
     } else {
       alert('Please fill out all required fields correctly, including type, latitude and longitude.');
     }
@@ -82,12 +81,48 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
           </Label>
           <Input id="name" name="name" placeholder="e.g. Community Food Hub" className="col-span-3" required />
         </div>
-        <div className="grid grid-cols-4 items-center gap-4">
-          <Label htmlFor="address" className="text-right">
+        
+        <div className="grid grid-cols-4 items-start gap-4">
+          <Label htmlFor="address-lookup" className="text-right pt-2">
             Address
           </Label>
-          <Input id="address" name="address" placeholder="123 Main St, Anytown, USA" className="col-span-3" required />
+          <div className="col-span-3">
+            <div className="flex gap-2">
+              <Input 
+                id="address-lookup" 
+                name="address"
+                value={addressForLookup}
+                onChange={(e) => setAddressForLookup(e.target.value)}
+                placeholder="Type address here..."
+                required
+              />
+              <Button type="button" onClick={handleGeoLookup} disabled={isLookingUp} size="icon">
+                <Wand2 className="h-4 w-4" />
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground mt-1">
+              (BETA) Have AI find lat & long. Type address and click the magic wand.
+            </p>
+          </div>
         </div>
+
+        <div className="grid grid-cols-4 items-start gap-4">
+          <Label htmlFor="lat" className="text-right pt-2">
+            Latitude
+          </Label>
+          <div className="col-span-3">
+            <Input id="lat" name="lat" type="number" step="any" placeholder="e.g. 40.7128" className="w-full" value={lat} onChange={e => setLat(e.target.value)} required />
+          </div>
+        </div>
+        <div className="grid grid-cols-4 items-start gap-4">
+          <Label htmlFor="lng" className="text-right pt-2">
+            Longitude
+          </Label>
+          <div className="col-span-3">
+            <Input id="lng" name="lng" type="number" step="any" placeholder="e.g. -74.0060" className="w-full" value={lng} onChange={e => setLng(e.target.value)} required />
+          </div>
+        </div>
+
         <div className="grid grid-cols-4 items-center gap-4">
           <Label htmlFor="hours" className="text-right">
             Hours
@@ -105,43 +140,7 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
                 ))}
             </RadioGroup>
         </div>
-        <div className="grid grid-cols-4 items-start gap-4">
-          <Label htmlFor="address-lookup" className="text-right pt-2">
-            AI Geo-Finder
-          </Label>
-          <div className="col-span-3">
-            <div className="flex gap-2">
-              <Input 
-                id="address-lookup" 
-                value={addressForLookup}
-                onChange={(e) => setAddressForLookup(e.target.value)}
-                placeholder="Type address here..."
-              />
-              <Button type="button" onClick={handleGeoLookup} disabled={isLookingUp} size="icon">
-                <Wand2 className="h-4 w-4" />
-              </Button>
-            </div>
-            <p className="text-xs text-muted-foreground mt-1">
-              (BETA) Have AI find lat & long. Type address and click the magic wand.
-            </p>
-          </div>
-        </div>
-        <div className="grid grid-cols-4 items-start gap-4">
-          <Label htmlFor="lat" className="text-right pt-2">
-            Latitude
-          </Label>
-          <div className="col-span-3">
-            <Input id="lat" name="lat" type="number" step="any" placeholder="e.g. 40.7128" className="w-full" value={lat} onChange={e => setLat(e.target.value)} required />
-          </div>
-        </div>
-        <div className="grid grid-cols-4 items-start gap-4">
-          <Label htmlFor="lng" className="text-right pt-2">
-            Longitude
-          </Label>
-          <div className="col-span-3">
-            <Input id="lng" name="lng" type="number" step="any" placeholder="e.g. -74.0060" className="w-full" value={lng} onChange={e => setLng(e.target.value)} required />
-          </div>
-        </div>
+        
         <div className="grid grid-cols-4 items-center gap-4">
           <Label htmlFor="notes" className="text-right">
             Notes
@@ -156,11 +155,11 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
       </div>
       <div className="mb-4 text-center">
         <a href="https://uminion.com/product/sister-union-13-2024-poster/" target="_blank" rel="noopener noreferrer" className="text-sm text-primary underline">
-          Support UnionSupport#13 To be able to help in more ways: Get The Poster
+          Get a Poster- Help Support UnionSupport#13 So It Can Do More
         </a>
       </div>
       <DialogFooter>
-        <Button type="submit">Save changes</Button>
+        <Button type="submit">Submit</Button>
       </DialogFooter>
     </form>
   );

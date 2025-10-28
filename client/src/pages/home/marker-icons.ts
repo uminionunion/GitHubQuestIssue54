@@ -1,6 +1,6 @@
 
 import L from 'leaflet';
-import { Pantry, PantryType } from './types';
+import { Pantry, PantryType, Politician, Candidate } from './types';
 
 const createIcon = (color: string, shape: string = 'default') => {
     // Using a simple trick for shape: different icon URLs.
@@ -52,4 +52,19 @@ export const getRandomIcon = (type: PantryType): L.Icon => {
     const randomIndex = Math.floor(Math.random() * availableColors.length);
     const randomColor = availableColors[randomIndex];
     return coloredIcons[randomColor];
+};
+
+const politicianIcons = {
+    'House': createIcon('grey'),
+    'Senate': createIcon('black'),
+};
+
+export const getIconForPolitician = (politician: Politician): L.Icon => {
+    return politician.office === 'House' ? politicianIcons.House : politicianIcons.Senate;
+};
+
+const candidateIcon = createIcon('gold');
+
+export const getIconForCandidate = (candidate: Candidate): L.Icon => {
+    return candidateIcon;
 };

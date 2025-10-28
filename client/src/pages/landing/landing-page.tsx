@@ -1,7 +1,7 @@
 
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { TheFoodPantryFeature } from '../pantry-feature/the-food-pantry-feature';
 import { Pantry } from '../home/types';
 import { PantryMap } from '../home/map';
@@ -17,19 +17,19 @@ export function LandingPage({ pantries, addPantry }: LandingPageProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-slate-900 text-foreground flex flex-col items-center justify-center p-4">
       <div className="flex gap-4 mb-4">
-        <Button size="lg" variant="secondary" onClick={() => setIsModalOpen(true)}>Find a Pantry</Button>
+        <Button size="lg" onClick={() => setIsModalOpen(true)}>Find a Pantry</Button>
         <Button size="lg" variant="secondary" onClick={() => setIsModalOpen(true)}>#13UnionSupportV001</Button>
       </div>
 
       <div 
-        className="group relative w-full max-w-4xl h-64 md:h-96 rounded-lg overflow-hidden cursor-pointer shadow-lg"
+        className="group relative w-full max-w-md h-48 rounded-lg overflow-hidden cursor-pointer shadow-lg"
         onClick={() => setIsModalOpen(true)}
       >
         <div className="absolute inset-0">
           <PantryMap pantries={pantries} onViewDetails={() => {}} isPreview={true} />
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-70 transition-all flex items-center justify-center">
-          <h2 className="text-white text-2xl md:text-3xl font-bold text-center p-4">
+          <h2 className="text-white text-xl md:text-2xl font-bold text-center p-4">
             Find a Food/Clothing/Resource Pantry/Hub & More:
           </h2>
         </div>

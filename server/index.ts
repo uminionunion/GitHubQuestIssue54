@@ -35,6 +35,26 @@ app.post('/api/pantries', async (req, res) => {
   }
 });
 
+app.get('/api/politicians', async (req, res) => {
+  try {
+    const politicians = await db.selectFrom('politicians').selectAll().execute();
+    res.json(politicians);
+  } catch (error) {
+    console.error('Failed to get politicians:', error);
+    res.status(500).json({ message: 'Failed to retrieve politicians' });
+  }
+});
+
+app.get('/api/candidates', async (req, res) => {
+  try {
+    const candidates = await db.selectFrom('candidates').selectAll().execute();
+    res.json(candidates);
+  } catch (error) {
+    console.error('Failed to get candidates:', error);
+    res.status(500).json({ message: 'Failed to retrieve candidates' });
+  }
+});
+
 app.get('/api/geocode', async (req, res) => {
   const address = req.query.address as string;
   if (!address) {

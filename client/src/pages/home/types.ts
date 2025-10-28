@@ -11,3 +11,26 @@ export interface Pantry {
   hours: string;
   type: PantryType;
 }
+
+export interface Politician {
+  id: number;
+  name: string;
+  office: 'House' | 'Senate';
+  state: string;
+  district: number | null;
+  party: string;
+  term_end_date: string;
+  lat: number;
+  lng: number;
+}
+
+export interface Candidate {
+  id: number;
+  name: string;
+  office: 'House' | 'Senate';
+  state: string;
+  district: number | null;
+  party: string;
+  lat: number;
+  lng: number;
+}
