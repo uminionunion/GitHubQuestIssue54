@@ -82,9 +82,9 @@ export function PantryControls({
   };
 
   return (
-    <div className="p-6">
-      <h2 className="text-2xl font-bold mb-4">PantryFinder</h2>
-      <div className="space-y-4">
+    <div className="p-6 h-full flex flex-col">
+      <h2 className="text-2xl font-bold mb-4 flex-shrink-0">PantryFinder</h2>
+      <div className="space-y-4 flex-shrink-0">
         <Button className="w-full" onClick={() => setActiveView('find')}>Find a Pantry</Button>
         <Button className="w-full" variant="secondary" onClick={() => setActiveView(activeView === 'host' ? 'find' : 'host')}>
           Know-of a Pantry? Host a Pantry?
@@ -92,10 +92,10 @@ export function PantryControls({
         <Button className="w-full golden-button" onClick={() => setActiveView(activeView === 'running' ? 'find' : 'running')}>
           Running for Office?
         </Button>
+      </div>
 
-        <div className="mt-4 border-t pt-4">
-          {renderActiveView()}
-        </div>
+      <div className="mt-4 border-t pt-4 flex-grow overflow-y-auto">
+        {renderActiveView()}
       </div>
     </div>
   );

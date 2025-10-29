@@ -58,7 +58,33 @@ app.post('/api/pantries', async (req, res) => {
 app.get('/api/politicians', async (req, res) => {
   try {
     const politicians = await db.selectFrom('politicians').selectAll().execute();
-    res.json(politicians);
+    
+    // Add a second senator for each state for demonstration purposes
+    const senators = politicians.filter(p => p.office === 'Senate');
+    const senatorsByState = senators.reduce((acc, senator) => {
+      if (!acc[senator.state]) {
+        acc[senator.state] = [];
+      }
+      acc[senator.state].push(senator);
+      return acc;
+    }, {});
+
+    const additionalSenators = [];
+    Object.values(senatorsByState).forEach((senatorList: any[]) => {
+      if (senatorList.length === 1) {
+        const existingSenator = senatorList[0];
+        const newSenator = {
+          ...existingSenator,
+          id: existingSenator.id + 1000, // Avoid ID collision
+          name: `Senator for ${existingSenator.state} 2`,
+          lat: existingSenator.lat + 0.1, // Offset to avoid marker overlap
+          lng: existingSenator.lng + 0.1,
+        };
+        additionalSenators.push(newSenator);
+      }
+    });
+
+    res.json([...politicians, ...additionalSenators]);
   } catch (error) {
     console.error('Failed to get politicians:', error);
     res.status(500).json({ message: 'Failed to retrieve politicians' });

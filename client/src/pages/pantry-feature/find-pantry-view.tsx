@@ -148,7 +148,7 @@ export function FindPantryView({
 
         <div>
           <h4 className="font-medium mb-2 mt-4">Country</h4>
-          <div className="max-h-48 overflow-y-auto space-y-2 p-2 border rounded-md">
+          <div className="space-y-2 p-2 border rounded-md">
             <RadioGroup value={selectedCountry || ''} onValueChange={handleCountryChange}>
               {sortedCountryList.map(country => (
                 <div key={country} className="flex items-center space-x-2">
@@ -163,7 +163,7 @@ export function FindPantryView({
         {states && states.length > 0 && (
           <div>
             <h4 className="font-medium mb-2">{selectedCountry} States/Provinces</h4>
-            <div className="max-h-48 overflow-y-auto space-y-2 p-2 border rounded-md">
+            <div className="space-y-2 p-2 border rounded-md">
               <RadioGroup value={selectedState || ''} onValueChange={handleStateChange}>
                 {states.map(state => (
                   <div key={state} className="flex items-center space-x-2">

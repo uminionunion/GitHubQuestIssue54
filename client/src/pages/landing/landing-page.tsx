@@ -18,20 +18,20 @@ export function LandingPage({ pantries, addPantry, candidates, addCandidate }: L
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-background to-slate-900 text-foreground flex flex-col items-center justify-center p-4">
-      <div className="flex gap-4 mb-4">
-        <Button size="lg" onClick={() => setIsModalOpen(true)}>Find a Pantry</Button>
-        <Button size="lg" variant="secondary" onClick={() => setIsModalOpen(true)}>#13UnionSupportV001</Button>
+      <div className="flex gap-2 mb-2">
+        <Button size="sm" onClick={() => setIsModalOpen(true)}>Find a Pantry</Button>
+        <Button size="sm" variant="secondary" onClick={() => setIsModalOpen(true)}>#13UnionSupportV001</Button>
       </div>
 
       <div 
-        className="group relative w-full max-w-md h-48 rounded-lg overflow-hidden cursor-pointer shadow-lg"
+        className="group relative w-full max-w-xs h-24 rounded-lg overflow-hidden cursor-pointer shadow-lg"
         onClick={() => setIsModalOpen(true)}
       >
         <div className="absolute inset-0">
           <PantryMap pantries={pantries} onViewDetails={() => {}} isPreview={true} />
         </div>
         <div className="absolute inset-0 bg-black bg-opacity-50 group-hover:bg-opacity-70 transition-all flex items-center justify-center">
-          <h2 className="text-white text-xl md:text-2xl font-bold text-center p-4">
+          <h2 className="text-white text-base md:text-lg font-bold text-center p-2">
             Find a Food/Clothing/Resource Pantry/Hub & More:
           </h2>
         </div>
