@@ -27,13 +27,15 @@ export function PantryMap({ pantries = [], politicians = [], candidates = [], on
   };
 
   React.useEffect(() => {
-    if (mapRef.current) {
-      // Invalidate size after a short delay to ensure container is sized
-      setTimeout(() => {
+    // When the map is not a preview, it's in the modal.
+    // We need to invalidate its size after it becomes visible.
+    if (!isPreview && mapRef.current) {
+      const timer = setTimeout(() => {
         mapRef.current?.invalidateSize();
-      }, 100);
+      }, 200); // A small delay to allow the modal to render.
+      return () => clearTimeout(timer);
     }
-  }, []);
+  }, [isPreview]);
 
   const getBallotpediaUrl = (name: string) => {
     const formattedName = name.replace(/\s+/g, '_');

@@ -105,7 +105,7 @@ Create a directory named `api` to house the PHP scripts. All endpoints must hand
 -   **Styling:** A large overlay (90vw width, 90vh height) with a dark background (`#0f172a`), light text, and rounded corners.
 -   **Layout:** A two-column layout.
     -   **Left Column (Map):** Takes up 2/3 of the width for the Leaflet map.
-    -   **Right Column (Controls):** Takes up 1/3 of the width, with a border. This is the control panel. **Crucially, this entire column must be vertically scrollable** if its content exceeds the viewport height.
+    -   **Right Column (Controls):** Takes up 1/3 of the width, with a border. This is the control panel. **Crucially, this entire column must be vertically scrollable** if its content exceeds the viewport height. The scrolling should apply to the entire panel, not just parts of it.
 
 **3. Styling (CSS):**
 -   **Theme:** Dark theme with dark backgrounds, light text, and bright blue for primary actions.
@@ -120,6 +120,7 @@ Create a directory named `api` to house the PHP scripts. All endpoints must hand
 **1. Initialization:**
 -   On page load, fetch initial pantry data and populate the preview map.
 -   When the modal opens, fetch all data (`pantries`, `politicians`, `candidates`) and initialize the main interactive map.
+-   **CRITICAL MAP FIX:** After the modal is displayed, the map must be explicitly resized using Leaflet's `invalidateSize()` method to ensure it renders correctly. A `setTimeout` is a reliable way to do this.
 
 **2. Map Logic (Leaflet.js):**
 -   **Initialization:** Create a Leaflet map instance centered on the USA.
@@ -137,7 +138,7 @@ Create a directory named `api` to house the PHP scripts. All endpoints must hand
 -   **"Find a Pantry" View:**
     -   **Category Checkboxes:** Main categories for filtering.
     -   **Conditional Checkboxes:** When "Politicians..." is checked, show "Senator?" and "House of Representative?" checkboxes. When "Candidates..." is checked, show the same, but styled with bright gold text.
-    -   **Scrolling:** The entire view, including category checkboxes and country/state lists, must scroll vertically without individual scrollbars on the lists.
+    -   **Scrolling:** The entire view, including category checkboxes and country/state lists, must scroll vertically within the main control panel's scroll container.
 -   **"Host a Pantry" Form:**
     -   **AI Geo-Finder:** A "magic wand" button geocodes an address via `/api/geocode.php` and fills lat/lng fields.
     -   **Form Submission:** `POST` data to `/api/pantry.php`. On success, update the map.

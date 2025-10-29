@@ -68,7 +68,7 @@ export function TheFoodPantryFeature({ pantries, addPantry, initialCandidates, a
           onViewDetails={handleViewDetails} 
         />
       </div>
-      <div className="w-1/3 h-full border-l overflow-y-auto">
+      <div className="w-1/3 h-full border-l">
         <PantryControls 
           addPantry={addPantry} 
           addCandidate={handleAddCandidate}
