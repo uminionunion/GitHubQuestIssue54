@@ -4,6 +4,7 @@ import { PantryMap } from '../home/map';
 import { PantryControls } from './pantry-controls';
 import { Candidate, Pantry, Politician } from '../home/types';
 import { Category, OfficeType } from './find-pantry-view';
+import { Button } from '@/components/ui/button';
 
 interface TheFoodPantryFeatureProps {
   pantries: Pantry[];
@@ -41,8 +42,6 @@ export function TheFoodPantryFeature({ pantries, addPantry, initialCandidates, a
   const handleAddCandidate = async (candidateData: Omit<Candidate, 'id' | 'lat' | 'lng'>) => {
     const newCandidate = await addCandidate(candidateData);
     if (newCandidate) {
-      // The App component will update the state, which will flow down here.
-      // No need to call setCandidates directly if initialCandidates is updated properly.
       setActiveView('find');
     }
     return newCandidate;
@@ -60,7 +59,22 @@ export function TheFoodPantryFeature({ pantries, addPantry, initialCandidates, a
 
   return (
     <div className="flex h-full w-full bg-background">
-      <div className="w-2/3 h-full">
+      {/* Left Column - Navigation */}
+      <div className="w-1/4 h-full border-r p-6 flex flex-col">
+        <h2 className="text-2xl font-bold mb-4">PantryFinder</h2>
+        <div className="space-y-4">
+          <Button className="w-full" onClick={() => setActiveView('find')}>Find a Pantry</Button>
+          <Button className="w-full" variant="secondary" onClick={() => setActiveView(activeView === 'host' ? 'find' : 'host')}>
+            Know-of a Pantry? Host a Pantry?
+          </Button>
+          <Button className="w-full golden-button" onClick={() => setActiveView(activeView === 'running' ? 'find' : 'running')}>
+            Running for Office?
+          </Button>
+        </div>
+      </div>
+
+      {/* Middle Column - Map */}
+      <div className="w-1/2 h-full">
         <PantryMap 
           pantries={filteredPantries} 
           politicians={filteredPoliticians}
@@ -68,7 +82,9 @@ export function TheFoodPantryFeature({ pantries, addPantry, initialCandidates, a
           onViewDetails={handleViewDetails} 
         />
       </div>
-      <div className="w-1/3 h-full border-l overflow-y-auto">
+
+      {/* Right Column - Controls/Content */}
+      <div className="w-1/4 h-full border-l overflow-y-auto">
         <PantryControls 
           addPantry={addPantry} 
           addCandidate={handleAddCandidate}
