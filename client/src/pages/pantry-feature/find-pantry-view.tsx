@@ -1,3 +1,4 @@
+
 {/*
   File: /client/src/pages/pantry-feature/find-pantry-view.tsx
   Folder: /client/src/pages/pantry-feature
