@@ -1,4 +1,21 @@
+{/*
+  File: /client/src/components/ui/textarea.tsx
+  Folder: /client/src/components/ui
 
+  Purpose:
+  This file defines a reusable `Textarea` component for multi-line text input.
+  It's a styled wrapper around the standard HTML `<textarea>` element, providing consistent styling with the rest of the application's UI components.
+  It uses `React.forwardRef` to allow parent components to access the underlying textarea element.
+
+  Connections:
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - This component is designed to be used in forms where users need to enter larger blocks of text.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: `<textarea class="textarea-styles" name="comment"></textarea>`.
+  - CSS: A stylesheet would define the styles for `.textarea-styles` (e.g., border, padding, background, focus states).
+  - JS: JavaScript would be used to get or set the value of the textarea and handle input events.
+*/}
 import * as React from 'react';
 
 import { cn } from '@/lib/utils';
@@ -23,3 +40,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
 Textarea.displayName = 'Textarea';
 
 export { Textarea };
+{/*
+  Connections Summary:
+  - line 21: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+*/}

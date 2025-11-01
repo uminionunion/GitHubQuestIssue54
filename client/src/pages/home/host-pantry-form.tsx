@@ -1,4 +1,24 @@
+{/*
+  File: /client/src/pages/home/host-pantry-form.tsx
+  Folder: /client/src/pages/home
 
+  Purpose:
+  This component provides a form for users to submit a new pantry. It includes fields for name, address, hours, type, and other details.
+  It features a "magic wand" button that uses a geocoding API to automatically find the latitude and longitude from a given address, simplifying the process for the user.
+  The form can be rendered either inside a dialog or as a standalone view.
+
+  Connections:
+  - `@/components/ui/*`: Imports various UI components like `Button`, `Input`, `Label`, `Textarea`, `RadioGroup` to build the form.
+  - `./types`: Imports `Pantry`, `PantryType`, `RepeatingType` type definitions.
+  - `lucide-react`: Imports the `Wand2` icon for the geocoding button.
+  - `server/index.ts`: The geocoding lookup (`handleGeoLookup`, line 49) makes a GET request to the `/api/geocode` endpoint. The form submission (`handleSubmit`, line 70) calls the `onSubmit` prop, which traces back to `addPantry` in `App.tsx` and makes a POST request to `/api/pantries`.
+  - `client/src/pages/pantry-feature/pantry-controls.tsx`: This form is rendered by `PantryControls` when the active view is 'host'.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - PHP/SQL: This would be a `pantry.php` file. On GET, it displays the form. On POST, it validates data, inserts it into the `pantries` table, and shows a success message. The geocoding part would involve a server-side cURL request to an external geocoding service.
+  - HTML: A `<form>` with all the necessary input fields.
+  - JS: JavaScript for client-side validation and for making an AJAX call to the server's geocoding endpoint.
+*/}
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -217,3 +237,9 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
     </div>
   );
 }
+{/*
+  Connections Summary:
+  - line 49: fetch(`/api/geocode...`) -> Connects to GET `/api/geocode` endpoint in `server/index.ts`.
+  - line 81: `onSubmit` call -> Connects through props to `addPantry` in `App.tsx`, which sends a POST to `/api/pantries`.
+  - UI components from `@/components/ui/*` are used throughout.
+*/}

@@ -1,3 +1,23 @@
+{/*
+  File: /client/src/components/ui/toggle.tsx
+  Folder: /client/src/components/ui
+
+  Purpose:
+  This file defines a reusable `Toggle` component, which is a button that can be toggled on or off. It's similar to a checkbox but looks like a button.
+  It is built on top of the Radix UI Toggle primitive for accessibility and state management.
+  It uses `class-variance-authority` (cva) to define different visual variants and sizes.
+
+  Connections:
+  - `@radix-ui/react-toggle`: Provides the core toggle button functionality.
+  - `class-variance-authority`: Used to define the component's variants and sizes.
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - This component is useful for toolbars or settings where a simple on/off state is needed for an option.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: A `<button>` element.
+  - CSS: Styles to change the button's appearance (e.g., background color) when it's in the "on" or "pressed" state.
+  - JS: A click event listener to toggle a state variable and update the button's visual style accordingly.
+*/}
 import * as React from 'react';
 import * as TogglePrimitive from '@radix-ui/react-toggle';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -41,3 +61,7 @@ const Toggle = React.forwardRef<
 Toggle.displayName = TogglePrimitive.Root.displayName;
 
 export { Toggle, toggleVariants };
+{/*
+  Connections Summary:
+  - line 24: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+*/}

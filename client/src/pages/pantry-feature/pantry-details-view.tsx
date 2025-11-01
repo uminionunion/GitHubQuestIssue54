@@ -1,4 +1,24 @@
+{/*
+  File: /client/src/pages/pantry-feature/pantry-details-view.tsx
+  Folder: /client/src/pages/pantry-feature
 
+  Purpose:
+  This component displays the detailed information for a single pantry that has been selected from the map.
+  It shows the pantry's name, address, hours, notes, and other properties. It also includes a "Vouched for?"
+  section with thumbs up/down buttons, which reveals a comment box. (Note: The feedback submission is not fully implemented).
+
+  Connections:
+  - `@/components/ui/button`, `@/components/ui/textarea`, `@/components/ui/label`: Imports UI components to build the view.
+  - `lucide-react`: Imports the `ThumbsUp` and `ThumbsDown` icons.
+  - `../home/types`: Imports the `Pantry` type definition.
+  - `client/src/pages/pantry-feature/pantry-controls.tsx`: This component is rendered by `PantryControls` when the `activeView` is 'details' and a pantry is selected.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - This would be equivalent to a `pantry-details.php?id=123` page or a section on the main page.
+  - PHP/SQL: The script would take a pantry ID from the URL, query the database (`SELECT * FROM pantries WHERE id = ?`), and fetch the details for that specific pantry.
+  - HTML: The fetched data would be rendered into a structured HTML layout with headings and paragraphs.
+  - JS: JavaScript would handle the logic for showing the comment box when the voting buttons are clicked.
+*/}
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { ThumbsUp, ThumbsDown } from 'lucide-react';
@@ -64,3 +84,10 @@ export function PantryDetailsView({ pantry }: PantryDetailsViewProps) {
     </div>
   );
 }
+{/*
+  Connections Summary:
+  - line 27: import { Button } from '@/components/ui/button'; -> Connects to `client/src/components/ui/button.tsx`.
+  - line 29: import { Textarea } from '@/components/ui/textarea'; -> Connects to `client/src/components/ui/textarea.tsx`.
+  - line 30: import { Label } from '@/components/ui/label'; -> Connects to `client/src/components/ui/label.tsx`.
+  - line 31: import { Pantry } from '../home/types'; -> Connects to `client/src/pages/home/types.ts`.
+*/}

@@ -1,4 +1,21 @@
+/*
+  File: /client/src/pages/home/marker-icons.ts
+  Folder: /client/src/pages/home
 
+  Purpose:
+  This file is responsible for creating and providing custom map marker icons for the Leaflet map.
+  It defines functions that return different `L.Icon` instances based on the type of data being displayed
+  (e.g., a green icon for a food pantry, a gold one for a candidate). This centralizes the icon logic,
+  making it easy to manage marker appearance across the application.
+
+  Connections:
+  - `leaflet`: Imports the core Leaflet library to create `L.Icon` instances.
+  - `./types`: Imports `Pantry`, `Politician`, `Candidate` type definitions to determine which icon to use.
+  - `client/src/pages/home/map.tsx`: This is the primary consumer of this file. The `PantryMap` component imports and uses `getIconForPantry`, `getIconForPolitician`, etc., to set the icon for each marker.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - This is a client-side utility module. In a traditional stack, this logic would be part of the main JavaScript file that handles the map. It would contain functions that return different icon image URLs or configuration objects based on the data type.
+*/
 import L from 'leaflet';
 import { Pantry, PantryType, Politician, Candidate } from './types';
 
@@ -68,3 +85,7 @@ const candidateIcon = createIcon('gold');
 export const getIconForCandidate = (candidate: Candidate): L.Icon => {
     return candidateIcon;
 };
+/*
+  Connections Summary:
+  - This file is imported and used by `client/src/pages/home/map.tsx` to get map marker icons.
+*/

@@ -1,4 +1,28 @@
+{/*
+  File: /client/src/pages/pantry-feature/the-food-pantry-feature.tsx
+  Folder: /client/src/pages/pantry-feature
 
+  Purpose:
+  This is the main component for the entire "PantryFinder" feature that lives inside the modal.
+  It sets up the three-column layout (Navigation, Map, Controls). It manages the state for the currently active view
+  (find, host, details, etc.), the selected filters, and the data fetched from the API (politicians, candidates).
+  It passes down data and state management functions to its child components.
+
+  Connections:
+  - `../home/map`: Renders the `PantryMap` component in the middle column.
+  - `./pantry-controls`: Renders the `PantryControls` component in the right column.
+  - `../home/types`: Imports `Pantry`, `Politician`, `Candidate` type definitions.
+  - `./find-pantry-view`: Imports `Category` and `OfficeType` types for state management.
+  - `@/components/ui/button`: Uses the `Button` component for the left-side navigation.
+  - `client/src/pages/landing/landing-page.tsx`: This component is rendered by `LandingPage` inside a `Dialog`.
+  - `server/index.ts`: Fetches politician data from the `/api/politicians` endpoint (line 30).
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - This component acts as the main controller for the entire single-page feature.
+  - HTML: A container `div` with three child `div`s for the columns.
+  - CSS: Flexbox or CSS Grid to create the three-column layout.
+  - JS: A large part of the application's client-side logic would live here. It would initialize the map, handle clicks on the navigation buttons to show/hide different views in the right column, and manage the filtering logic that updates the map markers.
+*/}
 import * as React from 'react';
 import { PantryMap } from '../home/map';
 import { PantryControls } from './pantry-controls';
@@ -42,6 +66,7 @@ export function TheFoodPantryFeature({ pantries, addPantry, initialCandidates, a
   const handleAddCandidate = async (candidateData: Omit<Candidate, 'id' | 'lat' | 'lng'>) => {
     const newCandidate = await addCandidate(candidateData);
     if (newCandidate) {
+      setCandidates(prev => [...prev, newCandidate]);
       setActiveView('find');
     }
     return newCandidate;
@@ -102,3 +127,14 @@ export function TheFoodPantryFeature({ pantries, addPantry, initialCandidates, a
     </div>
   );
 }
+{/*
+  Connections Summary:
+  - line 28: import { PantryMap } from '../home/map'; -> Connects to `client/src/pages/home/map.tsx`.
+  - line 29: import { PantryControls } from './pantry-controls'; -> Connects to `client/src/pages/pantry-feature/pantry-controls.tsx`.
+  - line 30: import { Candidate, Pantry, Politician } from '../home/types'; -> Connects to `client/src/pages/home/types.ts`.
+  - line 31: import { Category, OfficeType } from './find-pantry-view'; -> Connects to `client/src/pages/pantry-feature/find-pantry-view.tsx`.
+  - line 32: import { Button } from '@/components/ui/button'; -> Connects to `client/src/components/ui/button.tsx`.
+  - line 50: fetch('/api/politicians') -> Connects to GET `/api/politicians` endpoint in `server/index.ts`.
+  - line 100: Renders `<PantryMap />`.
+  - line 109: Renders `<PantryControls />`.
+*/}

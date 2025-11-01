@@ -1,4 +1,23 @@
+{/*
+  File: /client/src/pages/pantry-feature/running-for-office-form.tsx
+  Folder: /client/src/pages/pantry-feature
 
+  Purpose:
+  This component provides a form for users to submit information about a political candidate. It includes fields for name, location (country/state),
+  office type, and optional contact info. Upon successful submission, it displays a "thank you" message with a link to the relevant Ballotpedia page for ballot access information.
+
+  Connections:
+  - `@/components/ui/button`, `@/components/ui/input`, `@/components/ui/label`, `@/components/ui/checkbox`, `@/components/ui/select`: Imports various UI components to build the form.
+  - `../home/types`: Imports the `Candidate` type definition.
+  - `./countries-data`: Imports the `countries` object to populate the country and state dropdowns.
+  - `client/src/pages/pantry-feature/pantry-controls.tsx`: This component is rendered by `PantryControls` when the `activeView` is 'running'. The `onSubmit` function it receives is used to send the data to the backend.
+  - The `onSubmit` prop connects to the `addCandidate` function in `App.tsx`, which in turn makes a POST request to the `/api/candidates` endpoint in `server/index.ts`.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - PHP/SQL: This would be a `candidate.php` file. On GET, it would display the HTML form. On POST, it would validate the submitted data, geocode the location (by calling an external API), insert the new candidate into the `candidates` table in the database, and then display a success message.
+  - HTML: A `<form method="POST" action="candidate.php">` with all the necessary input fields, selects, and checkboxes.
+  - JS: Client-side validation and potentially dynamic population of the 'state' dropdown based on the selected 'country'.
+*/}
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -109,8 +128,8 @@ export function RunningForOfficeForm({ onSubmit }: RunningForOfficeFormProps) {
             </Select>
           </div>
           <div>
-            <Label htmlFor="state">State?</Label>
-            <Select onValueChange={setSelectedState} value={selectedState} disabled={!states.length}>
+            <Label htmlFor="state">State/Province?</Label>
+            <Select onValueChange={setSelectedState} value={selectedState} disabled={!selectedCountry}>
               <SelectTrigger id="state"><SelectValue placeholder="Select State/Province" /></SelectTrigger>
               <SelectContent>
                 {states.map(s => <SelectItem key={s} value={s}>{s}</SelectItem>)}
@@ -121,7 +140,7 @@ export function RunningForOfficeForm({ onSubmit }: RunningForOfficeFormProps) {
 
         <div>
           <Label>Office?</Label>
-          <div className="grid grid-cols-3 gap-2 mt-2">
+          <div className="grid grid-cols-2 gap-2 mt-2">
             {officeCheckboxes.map(office => (
               <div key={office} className="flex items-center space-x-2">
                 <Checkbox 
@@ -135,25 +154,37 @@ export function RunningForOfficeForm({ onSubmit }: RunningForOfficeFormProps) {
         </div>
 
         <div>
-          <Label htmlFor="website">Optional: Website</Label>
+          <Label htmlFor="website">Website? (Optional)</Label>
           <Input id="website" name="website" />
         </div>
 
         <div>
-          <Label htmlFor="phone">Optional: Want Union Resources? Type in your Number:</Label>
-          <Input id="phone" name="phone" type="tel" />
-          <p className="text-xs text-muted-foreground mt-1">
-            The 12,000+ person uminion union Helps with: "Building a website/fundraising/advertising/and Helping you get on the Ballot" if you choose to provide a number for us to send you instructions on how to access these optional resources.
-          </p>
+          <Label htmlFor="phone">Phone? (Optional)</Label>
+          <Input id="phone" name="phone" />
         </div>
 
         <div className="flex items-center space-x-2">
-          <Checkbox id="show-on-map" checked={showOnMap} onCheckedChange={(checked) => setShowOnMap(!!checked)} />
-          <Label htmlFor="show-on-map">Want a marker of you running; placed on the map?</Label>
+          <Checkbox 
+            id="show-on-map" 
+            checked={showOnMap} 
+            onCheckedChange={(checked) => setShowOnMap(!!checked)}
+          />
+          <Label htmlFor="show-on-map">Show me on the map</Label>
         </div>
 
-        <Button type="submit" className="w-full">Submit</Button>
+        <Button type="submit" className="w-full golden-button">Submit</Button>
       </form>
     </div>
   );
 }
+{/*
+  Connections Summary:
+  - line 26: import { Button } from '@/components/ui/button'; -> Connects to `client/src/components/ui/button.tsx`.
+  - line 27: import { Input } from '@/components/ui/input'; -> Connects to `client/src/components/ui/input.tsx`.
+  - line 28: import { Label } from '@/components/ui/label'; -> Connects to `client/src/components/ui/label.tsx`.
+  - line 29: import { Checkbox } from '@/components/ui/checkbox'; -> Connects to `client/src/components/ui/checkbox.tsx`.
+  - line 30: import { Candidate } from '../home/types'; -> Connects to `client/src/pages/home/types.ts`.
+  - line 31: import { countries } from './countries-data'; -> Connects to `client/src/pages/pantry-feature/countries-data.ts`.
+  - line 32: import { Select, ... } from '@/components/ui/select'; -> Connects to `client/src/components/ui/select.tsx`.
+  - line 61: The `onSubmit` call connects through props to `addCandidate` in `App.tsx`, which sends a POST to `/api/candidates`.
+*/}

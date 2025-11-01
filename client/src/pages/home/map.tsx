@@ -1,4 +1,26 @@
+{/*
+  File: /client/src/pages/home/map.tsx
+  Folder: /client/src/pages/home
 
+  Purpose:
+  This component renders the interactive map using `react-leaflet`. It is responsible for displaying markers for pantries, politicians, and candidates.
+  It receives filtered data as props and renders the appropriate markers with custom icons and popups. It also handles click events on markers to
+  trigger actions in the parent component, like showing details.
+
+  Connections:
+  - `react-leaflet`: The core library for rendering the map.
+  - `./types`: Imports `Pantry`, `Politician`, `Candidate` type definitions.
+  - `@/components/ui/button`: Uses the `Button` component inside the popups.
+  - `./marker-icons`: Imports functions to get custom icons for different marker types.
+  - `client/src/pages/pantry-feature/the-food-pantry-feature.tsx`: This component is rendered by `TheFoodPantryFeature` and receives data and callbacks as props.
+  - `client/src/index.css`: The `.popup-dark` class used for styling popups is defined here.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - This is a highly specialized client-side component.
+  - HTML: A single `<div id="map"></div>`.
+  - JS: A large JavaScript file that initializes a Leaflet or Google Maps instance on the map div. It would then iterate through data (fetched via AJAX) and create marker objects, add them to the map, and attach click listeners and popup content.
+  - CSS: Styles for the map container and custom styles for the popups.
+*/}
 import * as React from 'react';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { Pantry, Politician, Candidate } from './types';
@@ -177,3 +199,9 @@ export function PantryMap({ pantries = [], politicians = [], candidates = [], on
     </MapContainer>
   );
 }
+{/*
+  Connections Summary:
+  - line 38: import { Button } from '@/components/ui/button'; -> Connects to `client/src/components/ui/button.tsx`.
+  - line 39: import { getIconForPantry, ... } from './marker-icons'; -> Connects to `client/src/pages/home/marker-icons.ts`.
+  - line 173: `onClick={() => onViewDetails(pantry)}` -> Calls the `onViewDetails` function passed from `TheFoodPantryFeature`.
+*/}

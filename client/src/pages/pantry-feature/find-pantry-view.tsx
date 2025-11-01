@@ -1,4 +1,23 @@
+{/*
+  File: /client/src/pages/pantry-feature/find-pantry-view.tsx
+  Folder: /client/src/pages/pantry-feature
 
+  Purpose:
+  This component represents the "Find a Pantry" view within the modal's right-hand panel. It contains all the filtering controls,
+  including checkboxes for categories (pantries, politicians, candidates), conditional sub-filters for office types, and radio groups for selecting a country and state.
+  The state of these filters is managed by the parent component (`TheFoodPantryFeature`) and passed down as props.
+
+  Connections:
+  - `@/components/ui/checkbox`, `@/components/ui/label`, `@/components/ui/button`, `@/components/ui/radio-group`: Imports various UI components to build the form.
+  - `../home/types`: Imports the `PantryType` definition.
+  - `./countries-data`: Imports the `countries` object to populate the country/state selection lists.
+  - `client/src/pages/pantry-feature/pantry-controls.tsx`: This component is rendered by `PantryControls` when the active view is 'find'. It receives its state and callbacks from the parent.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: A `<form>` containing various `<input type="checkbox">` and `<input type="radio">` elements for the filters.
+  - CSS: Styles for the form layout, labels, and input elements.
+  - JS: JavaScript to handle showing/hiding the conditional sub-filters (e.g., for politicians) and to collect the selected filter values to apply to the map. The filtering itself would happen in JS by hiding/showing map markers.
+*/}
 import * as React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -92,13 +111,6 @@ export function FindPantryView({
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex justify-between items-center mb-4 flex-shrink-0">
-        <h3 className="text-lg font-semibold">Find a Pantry</h3>
-        <Button>Search</Button>
-      </div>
-      <p className="text-sm text-muted-foreground mb-4 flex-shrink-0">
-        Select countries and states/provinces to filter the map.
-      </p>
       <div className="space-y-4 overflow-y-auto pr-2 flex-grow">
         <div>
           <h4 className="font-medium mb-2">Category</h4>
@@ -179,3 +191,13 @@ export function FindPantryView({
     </div>
   );
 }
+{/*
+  Connections Summary:
+  - line 29: import { Checkbox } from '@/components/ui/checkbox'; -> Connects to `client/src/components/ui/checkbox.tsx`.
+  - line 30: import { Label } from '@/components/ui/label'; -> Connects to `client/src/components/ui/label.tsx`.
+  - line 31: import { PantryType } from '../home/types'; -> Connects to `client/src/pages/home/types.ts`.
+  - line 32: import { Button } from '@/components/ui/button'; -> Connects to `client/src/components/ui/button.tsx`.
+  - line 33: import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'; -> Connects to `client/src/components/ui/radio-group.tsx`.
+  - line 34: import { countries } from './countries-data'; -> Connects to `client/src/pages/pantry-feature/countries-data.ts`.
+  - line 35: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+*/}

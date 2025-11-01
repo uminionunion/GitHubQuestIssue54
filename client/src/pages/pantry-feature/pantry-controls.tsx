@@ -1,6 +1,24 @@
+{/*
+  File: /client/src/pages/pantry-feature/pantry-controls.tsx
+  Folder: /client/src/pages/pantry-feature
 
+  Purpose:
+  This component acts as the main content area for the right-hand panel in the modal. It's a controller that determines which view to display based on the `activeView` state
+  (e.g., 'find' for filtering, 'host' for the submission form, 'details' for pantry info). It renders the appropriate sub-component for the current view.
+
+  Connections:
+  - `../home/host-pantry-form`: Renders this component when `activeView` is 'host'.
+  - `../home/types`: Imports `Candidate` and `Pantry` type definitions.
+  - `./find-pantry-view`: Renders this component when `activeView` is 'find'.
+  - `./pantry-details-view`: Renders this component when `activeView` is 'details'.
+  - `./running-for-office-form`: Renders this component when `activeView` is 'running'.
+  - `client/src/pages/pantry-feature/the-food-pantry-feature.tsx`: This component is rendered by `TheFoodPantryFeature` and receives state and functions as props to manage the active view and data submissions.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - JS: This would be a JavaScript function or module that handles dynamic content switching. It would show/hide different `div` sections of the page based on user interaction (e.g., clicking a tab). This is often called "view routing" or content swapping.
+  - PHP: In a multi-page approach, this would be handled by different PHP files (e.g., `find.php`, `host.php`). In a single-page PHP app, it might use a `?view=...` query parameter to decide which block of HTML to generate.
+*/}
 import * as React from 'react';
-import { Button } from '@/components/ui/button';
 import { HostPantryForm } from '../home/host-pantry-form';
 import { Candidate, Pantry } from '../home/types';
 import { FindPantryView, Category, OfficeType } from './find-pantry-view';
@@ -82,23 +100,22 @@ export function PantryControls({
   };
 
   return (
-    <div className="p-6">
-      <div>
-        <h2 className="text-2xl font-bold mb-4">PantryFinder</h2>
-        <div className="space-y-4">
-          <Button className="w-full" onClick={() => setActiveView('find')}>Find a Pantry</Button>
-          <Button className="w-full" variant="secondary" onClick={() => setActiveView(activeView === 'host' ? 'find' : 'host')}>
-            Know-of a Pantry? Host a Pantry?
-          </Button>
-          <Button className="w-full golden-button" onClick={() => setActiveView(activeView === 'running' ? 'find' : 'running')}>
-            Running for Office?
-          </Button>
-        </div>
-      </div>
-
-      <div className="mt-4 border-t pt-4">
+    <div className="p-6 h-full flex flex-col">
+      <div className="flex-grow overflow-y-auto">
         {renderActiveView()}
       </div>
     </div>
   );
 }
+{/*
+  Connections Summary:
+  - line 29: import { HostPantryForm } from '../home/host-pantry-form.tsx'; -> Connects to `client/src/pages/home/host-pantry-form.tsx`.
+  - line 30: import { Candidate, Pantry } from '../home/types'; -> Connects to `client/src/pages/home/types.ts`.
+  - line 31: import { FindPantryView, ... } from './find-pantry-view'; -> Connects to `client/src/pages/pantry-feature/find-pantry-view.tsx`.
+  - line 32: import { PantryDetailsView } from './pantry-details-view'; -> Connects to `client/src/pages/pantry-feature/pantry-details-view.tsx`.
+  - line 33: import { RunningForOfficeForm } from './running-for-office-form'; -> Connects to `client/src/pages/pantry-feature/running-for-office-form.tsx`.
+  - line 88: Renders `<FindPantryView />`.
+  - line 96: Renders `<HostPantryForm />`.
+  - line 98: Renders `<RunningForOfficeForm />`.
+  - line 100: Renders `<PantryDetailsView />`.
+*/}

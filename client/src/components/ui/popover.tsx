@@ -1,3 +1,22 @@
+{/*
+  File: /client/src/components/ui/popover.tsx
+  Folder: /client/src/components/ui
+
+  Purpose:
+  This file defines a set of components for creating a `Popover`, which is a floating content container that appears when a trigger element is clicked.
+  It is built on top of the Radix UI Popover primitive, which manages state, positioning, and accessibility.
+  The components (`Popover`, `PopoverTrigger`, `PopoverContent`) are styled with Tailwind CSS.
+
+  Connections:
+  - `@radix-ui/react-popover`: Provides the core popover functionality.
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - This component is used when you need to display additional information or controls without navigating away from the current view.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: A button to trigger the popover and a hidden `div` for the content.
+  - CSS: Styles to position the content `div` absolutely, control its visibility (`display: none`/`block`), and style its appearance.
+  - JS: A click event listener on the button to toggle the visibility of the content `div` and handle closing it when clicking outside.
+*/}
 import * as React from 'react';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
 
@@ -29,3 +48,7 @@ const PopoverContent = React.forwardRef<
 PopoverContent.displayName = PopoverPrimitive.Content.displayName;
 
 export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor };
+{/*
+  Connections Summary:
+  - line 24: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+*/}

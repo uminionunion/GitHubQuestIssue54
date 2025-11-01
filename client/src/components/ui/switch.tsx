@@ -1,3 +1,22 @@
+{/*
+  File: /client/src/components/ui/switch.tsx
+  Folder: /client/src/components/ui
+
+  Purpose:
+  This file defines a reusable `Switch` component, which is a toggle control that allows users to switch between two states (on/off).
+  It is built on top of the Radix UI Switch primitive for accessibility and functionality, and styled with Tailwind CSS.
+  The `cn` utility is used to merge CSS classes.
+
+  Connections:
+  - `@radix-ui/react-switch`: Provides the underlying functionality and accessibility for the switch component.
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - This component is designed to be imported and used in forms or settings pages where a boolean (true/false) input is needed.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: `<label class="switch"><input type="checkbox"><span class="slider"></span></label>`.
+  - CSS: A stylesheet would define styles for `.switch`, `.slider`, etc., to create the visual appearance of the toggle.
+  - JS: JavaScript would be used to handle the `change` event on the checkbox to update state or perform actions.
+*/}
 import * as React from 'react';
 import * as SwitchPrimitives from '@radix-ui/react-switch';
 
@@ -25,3 +44,7 @@ const Switch = React.forwardRef<
 Switch.displayName = SwitchPrimitives.Root.displayName;
 
 export { Switch };
+{/*
+  Connections Summary:
+  - line 22: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+*/}

@@ -1,4 +1,21 @@
+/*
+  File: /client/src/pages/pantry-feature/countries-data.ts
+  Folder: /client/src/pages/pantry-feature
 
+  Purpose:
+  This file exports a large constant object named `countries`. This object serves as a static data source,
+  mapping country names to an array of their respective states or provinces. This data is used to populate
+  the country and state selection dropdowns in the "Running for Office" and "Find a Pantry" forms.
+
+  Connections:
+  - `client/src/pages/pantry-feature/find-pantry-view.tsx`: Imports and uses the `countries` object to render the country and state radio button lists for filtering.
+  - `client/src/pages/pantry-feature/running-for-office-form.tsx`: Imports and uses the `countries` object to populate the country and state `<Select>` dropdowns.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - SQL/Database: In a larger application, this data would ideally be stored in a database in two tables, `countries` and `states`, with a foreign key relationship.
+  - PHP/SQL: A PHP script would query these tables (`SELECT * FROM countries; SELECT * FROM states WHERE country_id = ?;`) and provide the data to the frontend, likely as a JSON object.
+  - JS: If not using a database, this is the direct equivalent—a static data structure (like a JSON file or a JS object) that is imported and used by the frontend code.
+*/
 export const countries: Record<string, string[]> = {
     "Afghanistan": [],
     "Albania": [],
@@ -198,3 +215,9 @@ export const countries: Record<string, string[]> = {
     "Zambia": [],
     "Zimbabwe": []
 };
+/*
+  Connections Summary:
+  - This file is a data source, imported by:
+    - `client/src/pages/pantry-feature/find-pantry-view.tsx`
+    - `client/src/pages/pantry-feature/running-for-office-form.tsx`
+*/

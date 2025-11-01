@@ -1,3 +1,22 @@
+{/*
+  File: /client/src/components/ui/tooltip.tsx
+  Folder: /client/src/components/ui
+
+  Purpose:
+  This file defines components for creating a `Tooltip`, a small pop-up that displays information when a user hovers over an element.
+  It is built on top of the Radix UI Tooltip primitive, which handles the timing, positioning, and accessibility.
+  The components (`Tooltip`, `TooltipTrigger`, `TooltipContent`, `TooltipProvider`) are styled with Tailwind CSS.
+
+  Connections:
+  - `@radix-ui/react-tooltip`: Provides the core tooltip functionality.
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - The `TooltipProvider` should be wrapped around the part of the app that uses tooltips.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: An element with a `data-tooltip` attribute, and a hidden element for the tooltip content.
+  - CSS: Styles to position the tooltip content, control its visibility on hover, and style its appearance.
+  - JS: JavaScript to handle `mouseover` and `mouseout` events to show and hide the tooltip, often with a delay.
+*/}
 import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
@@ -28,3 +47,7 @@ const TooltipContent = React.forwardRef<
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+{/*
+  Connections Summary:
+  - line 21: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+*/}

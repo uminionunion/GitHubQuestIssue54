@@ -1,3 +1,24 @@
+{/*
+  File: /client/src/components/ui/dialog.tsx
+  Folder: /client/src/components/ui
+
+  Purpose:
+  This file defines a set of components for creating accessible `Dialog` (or modal) windows.
+  It is built on top of the Radix UI Dialog primitive, which handles focus management, state, and accessibility.
+  It exports several components (`Dialog`, `DialogTrigger`, `DialogContent`, `DialogHeader`, etc.) that are composed to build a complete modal.
+  The components are styled with Tailwind CSS.
+
+  Connections:
+  - `@radix-ui/react-dialog`: Provides the core dialog functionality.
+  - `lucide-react`: Provides the 'X' icon for the close button.
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - This is a crucial component for displaying focused content, forms, or messages that overlay the main application.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: A button to trigger the modal and a `div` for the modal content, initially hidden.
+  - CSS: Styles for the overlay (background), the modal container (positioning, sizing, styling), and animations.
+  - JS: A click listener on the trigger button to show the modal and overlay. Logic to handle closing the modal (e.g., via a close button or clicking the overlay) and to trap focus within the modal for accessibility.
+*/}
 'use client';
 
 import * as React from 'react';
@@ -120,3 +141,7 @@ export {
   DialogTitle,
   DialogDescription,
 };
+{/*
+  Connections Summary:
+  - line 28: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+*/}

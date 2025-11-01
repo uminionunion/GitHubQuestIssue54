@@ -1,3 +1,25 @@
+{/*
+  File: /client/src/components/ui/calendar.tsx
+  Folder: /client/src/components/ui
+
+  Purpose:
+  This file defines a `Calendar` component for date selection. It's a complex component that displays a calendar grid and allows users to pick dates.
+  It is built using the `react-day-picker` library, which provides extensive functionality for date pickers.
+  This component heavily customizes the appearance of `react-day-picker` using Tailwind CSS to match the application's design system.
+
+  Connections:
+  - `react-day-picker`: The core library providing the calendar logic and structure.
+  - `lucide-react`: Provides icons (e.g., chevrons) for navigation.
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - `@/components/ui/button`: Uses the custom `Button` component for calendar navigation and day cells.
+  - This component is typically used within a `Popover` to create a date picker input.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - This is a very complex component to build from scratch. A common approach would be to use a third-party JavaScript library like jQuery UI Datepicker or FullCalendar.
+  - HTML: A table structure (`<table>`, `<thead>`, `<tbody>`, `<tr>`, `<td>`) would be dynamically generated to represent the calendar grid.
+  - CSS: Extensive styling for the table, cells, states (hover, selected, disabled), and navigation.
+  - JS: Complex logic to generate the correct month, handle date selection, and navigate between months/years.
+*/}
 import * as React from 'react';
 import {
   ChevronDownIcon,
@@ -206,3 +228,8 @@ function CalendarDayButton({
 }
 
 export { Calendar, CalendarDayButton };
+{/*
+  Connections Summary:
+  - line 35: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+  - line 36: import { Button, buttonVariants } from '@/components/ui/button'; -> Connects to `client/src/components/ui/button.tsx`.
+*/}

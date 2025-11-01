@@ -1,3 +1,25 @@
+{/*
+  File: /client/src/components/ui/command.tsx
+  Folder: /client/src/components/ui
+
+  Purpose:
+  This file defines a set of components for creating a "command palette" interface. This is a common UI pattern (like VS Code's Ctrl+P) that allows users to quickly search and execute commands or navigate.
+  It is built using the `cmdk` library, which provides the core functionality.
+  It also integrates with the `Dialog` component to be displayed as a modal.
+
+  Connections:
+  - `cmdk`: The core library for the command palette functionality.
+  - `lucide-react`: Provides the `Search` icon.
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - `@/components/ui/dialog`: Used to wrap the command palette in a modal (`CommandDialog`).
+  - This is a powerful component for creating search interfaces or action menus.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: An `<input>` for search and a `<ul>` to display results.
+  - CSS: Styles for the input, the list, and list items (including hover/active states).
+  - JS: Complex JavaScript to handle keyboard input (up/down arrows, enter), filter the list of items based on the search query, and execute an action when an item is selected.
+  - Data for the command list might come from a static JS array or be fetched from a server.
+*/}
 import * as React from 'react';
 import { type DialogProps } from '@radix-ui/react-dialog';
 import { Command as CommandPrimitive } from 'cmdk';
@@ -149,3 +171,8 @@ export {
   CommandShortcut,
   CommandSeparator,
 };
+{/*
+  Connections Summary:
+  - line 30: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+  - line 31: import { Dialog, DialogContent } from '@/components/ui/dialog'; -> Connects to `client/src/components/ui/dialog.tsx`.
+*/}

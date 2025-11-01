@@ -1,3 +1,24 @@
+{/*
+  File: /client/src/components/ui/button.tsx
+  Folder: /client/src/components/ui
+
+  Purpose:
+  This file defines a highly reusable and customizable `Button` component.
+  It uses `class-variance-authority` (cva) to create different variants (e.g., `default`, `destructive`, `outline`) and sizes (e.g., `sm`, `lg`).
+  This allows for consistent button styling across the application while being flexible.
+  The `asChild` prop allows the button to wrap another component and pass the styles to it.
+
+  Connections:
+  - `@radix-ui/react-slot`: Used for the `asChild` prop functionality.
+  - `class-variance-authority`: The core library for defining the button's variants and sizes.
+  - `@/lib/utils`: Imports the `cn` utility function for merging Tailwind CSS classes.
+  - This is a fundamental UI component used throughout the entire application.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  - HTML: `<button class="button button-primary button-large">Click Me</button>`.
+  - CSS: A stylesheet with classes like `.button`, `.button-primary`, `.button-large` to define the base styles and variations.
+  - JS: JavaScript would be used to attach `click` event listeners to the buttons to trigger actions.
+*/}
 import * as React from 'react';
 import { Slot } from '@radix-ui/react-slot';
 import { cva, type VariantProps } from 'class-variance-authority';
@@ -55,3 +76,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export { Button, buttonVariants };
+{/*
+  Connections Summary:
+  - line 29: import { cn } from '@/lib/utils'; -> Connects to `client/src/lib/utils.ts`.
+*/}

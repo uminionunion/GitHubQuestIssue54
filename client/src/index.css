@@ -1,4 +1,23 @@
 
+/*
+  File: /client/src/index.css
+  Folder: /client/src
+
+  Purpose:
+  This is the main global stylesheet for the application. It uses Tailwind CSS's `@tailwind` directives to inject base styles, component classes, and utility classes.
+  It also defines the CSS variables for the light and dark themes, which control the application's color palette.
+  Custom global styles, like those for the Leaflet map popups and golden-themed elements, are also defined here.
+
+  Connections:
+  - `client/src/main.tsx`: This CSS file is imported here, making its styles available to the entire React application.
+  - `tailwind.config.js`: The theme variables (`--background`, `--primary`, etc.) are used in this config file to define Tailwind's color palette.
+  - `client/src/pages/home/map.tsx`: The `.popup-dark` classes are used here to style the Leaflet map popups.
+  - Various components: The `.golden-text`, `.golden-glow`, and `.golden-button` classes are used for candidate-related UI elements.
+
+  PHP/HTML/CSS/JS/SQL Equivalent:
+  This is the direct equivalent of a main `style.css` file in a traditional web project. It contains all the global styles, theme definitions, and utility classes.
+*/
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -120,3 +139,8 @@
 .golden-button:hover {
   background-color: #ffed4a;
 }
+/*
+  Connections Summary:
+  - This file is globally imported in `client/src/main.tsx`.
+  - The CSS variables defined here are consumed by `tailwind.config.js`.
+*/
