@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import {
@@ -195,10 +194,7 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
     return (
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Host a Pantry</DialogTitle>
-          <DialogDescription>
-            Fill out the details below to list a new food pantry. Click save when you're done.
-          </DialogDescription>
+          <DialogTitle>Add a Pantry?</DialogTitle>
         </DialogHeader>
         {FormContent}
       </DialogContent>
@@ -207,10 +203,6 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
 
   return (
     <div>
-      <h3 className="text-lg font-semibold">Host a Pantry</h3>
-      <p className="text-sm text-muted-foreground mb-4">
-        Fill out the details below to list a new food pantry.
-      </p>
       {FormContent}
     </div>
   );

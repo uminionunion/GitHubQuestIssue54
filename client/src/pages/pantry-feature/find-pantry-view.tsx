@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -65,7 +64,7 @@ export function FindPantryView({ selectedCategories, onCategoryChange, filterOpt
       <div className="space-y-4">
         <div>
           <h4 className="font-medium mb-2">Category</h4>
-          <div className="grid grid-cols-1 gap-2">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
             {categoryTypes.map(type => (
               <div key={type.id} className="flex items-center space-x-2">
                 <Checkbox 
@@ -76,36 +75,36 @@ export function FindPantryView({ selectedCategories, onCategoryChange, filterOpt
                 <Label htmlFor={`filter-type-${type.id}`} className={cn(type.className)}>{type.label}</Label>
               </div>
             ))}
-             {showPoliticianTypes && (
-              <div className="pl-6 mt-2 space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="filter-politician-senate" onCheckedChange={(checked) => handleFilterOptionChange('showPoliticianSenate', !!checked)} />
-                  <Label htmlFor="filter-politician-senate">Senator?</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="filter-politician-house" onCheckedChange={(checked) => handleFilterOptionChange('showPoliticianHouse', !!checked)} />
-                  <Label htmlFor="filter-politician-house">House of Representative?</Label>
-                </div>
-              </div>
-            )}
-            {showCandidateTypes && (
-              <div className="pl-6 mt-2 space-y-2">
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="filter-candidate-senate" onCheckedChange={(checked) => handleFilterOptionChange('showCandidateSenate', !!checked)} />
-                  <Label htmlFor="filter-candidate-senate" className="text-yellow-400 font-bold">Senator?</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <Checkbox id="filter-candidate-house" onCheckedChange={(checked) => handleFilterOptionChange('showCandidateHouse', !!checked)} />
-                  <Label htmlFor="filter-candidate-house" className="text-yellow-400 font-bold">House of Representative?</Label>
-                </div>
-              </div>
-            )}
           </div>
+          {showPoliticianTypes && (
+            <div className="pl-6 mt-2 space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="filter-politician-senate" onCheckedChange={(checked) => handleFilterOptionChange('showPoliticianSenate', !!checked)} />
+                <Label htmlFor="filter-politician-senate">Senator?</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox id="filter-politician-house" onCheckedChange={(checked) => handleFilterOptionChange('showPoliticianHouse', !!checked)} />
+                <Label htmlFor="filter-politician-house">House of Representative?</Label>
+              </div>
+            </div>
+          )}
+          {showCandidateTypes && (
+            <div className="pl-6 mt-2 space-y-2">
+              <div className="flex items-center space-x-2">
+                <Checkbox id="filter-candidate-senate" onCheckedChange={(checked) => handleFilterOptionChange('showCandidateSenate', !!checked)} />
+                <Label htmlFor="filter-candidate-senate" className="text-yellow-400 font-bold">Senator?</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Checkbox id="filter-candidate-house" onCheckedChange={(checked) => handleFilterOptionChange('showCandidateHouse', !!checked)} />
+                <Label htmlFor="filter-candidate-house" className="text-yellow-400 font-bold">House of Representative?</Label>
+              </div>
+            </div>
+          )}
         </div>
 
         <div>
           <h4 className="font-medium mb-2">Country</h4>
-          <div className="max-h-48 overflow-y-auto space-y-2 p-2 border rounded-md">
+          <div className="max-h-24 overflow-y-auto space-y-2 p-2 border rounded-md">
             <RadioGroup value={selectedCountry || ''} onValueChange={handleCountryChange}>
               {sortedCountryList.map(country => (
                 <div key={country} className="flex items-center space-x-2">
@@ -120,7 +119,7 @@ export function FindPantryView({ selectedCategories, onCategoryChange, filterOpt
         {states && states.length > 0 && (
           <div>
             <h4 className="font-medium mb-2">{selectedCountry} States/Provinces</h4>
-            <div className="max-h-48 overflow-y-auto space-y-2 p-2 border rounded-md">
+            <div className="max-h-40 overflow-y-auto space-y-2 p-2 border rounded-md">
               <RadioGroup value={selectedState || ''} onValueChange={handleStateChange}>
                 {states.map(state => (
                   <div key={state} className="flex items-center space-x-2">

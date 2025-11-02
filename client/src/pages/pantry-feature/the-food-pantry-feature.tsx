@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { PantryMap } from '../home/map';
 import { PantryControls } from './pantry-controls';
@@ -67,16 +66,16 @@ export function TheFoodPantryFeature({ pantries, addPantry }: TheFoodPantryFeatu
   return (
     <div className="flex h-full w-full bg-background">
       <div className="w-3/12 h-full border-r overflow-y-auto p-4 flex flex-col gap-4">
-        <Button className="w-full justify-start text-left" onClick={() => setActiveView('find')} variant={activeView === 'find' ? 'default' : 'secondary'}>
+        <Button className="w-full justify-center text-center" onClick={() => setActiveView('find')} variant={activeView === 'find' ? 'default' : 'secondary'}>
           Find a Pantry
         </Button>
-        <Button className="w-full justify-start text-left whitespace-normal h-auto" onClick={() => setActiveView('host')} variant={activeView === 'host' ? 'default' : 'secondary'}>
+        <Button className="w-full justify-center text-center whitespace-normal h-auto" onClick={() => setActiveView('host')} variant="secondary">
           Know-of a Pantry? Host a Pantry?
         </Button>
         <Button 
           className={cn(
-            "w-full justify-start text-left",
-            activeView === 'running' ? "bg-yellow-500 hover:bg-yellow-600 text-black" : "bg-yellow-400 hover:bg-yellow-500 text-black"
+            "w-full justify-center text-center",
+            "bg-yellow-400 hover:bg-yellow-500 text-black"
           )}
           onClick={() => setActiveView('running')}
         >

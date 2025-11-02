@@ -1,4 +1,3 @@
-
 import * as React from 'react';
 import { HostPantryForm } from '../home/host-pantry-form';
 import { Pantry } from '../home/types';
@@ -41,10 +40,19 @@ export function PantryControls({ addPantry, activeView, setActiveView, selectedP
     }
   };
 
+  const getTitle = () => {
+    if (activeView === 'host') return 'Add a Pantry?';
+    if (activeView === 'details') return 'Pantry Details';
+    if (activeView === 'find' || activeView === 'running') return null;
+    return 'PantryFinder';
+  };
+
+  const title = getTitle();
+
   return (
-    <div className="p-6">
-      {activeView !== 'find' && <h2 className="text-2xl font-bold mb-4">PantryFinder</h2>}
-      <div className="space-y-4">
+    <div className="p-6 flex flex-col h-full">
+      {title && <h2 className="text-2xl font-bold mb-4 flex-shrink-0">{title}</h2>}
+      <div className="space-y-4 overflow-y-auto flex-grow">
         {renderActiveView()}
       </div>
     </div>
