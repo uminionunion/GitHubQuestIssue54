@@ -1,3 +1,4 @@
+
 import * as React from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
@@ -63,8 +64,8 @@ export function FindPantryView({ selectedCategories, onCategoryChange, filterOpt
     <div>
       <div className="space-y-4">
         <div>
-          <h4 className="font-medium mb-2">Category</h4>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+          <h4 className="font-medium mb-2">Find a:</h4>
+          <div className="grid grid-cols-2 gap-4">
             {categoryTypes.map(type => (
               <div key={type.id} className="flex items-center space-x-2">
                 <Checkbox 
@@ -77,7 +78,7 @@ export function FindPantryView({ selectedCategories, onCategoryChange, filterOpt
             ))}
           </div>
           {showPoliticianTypes && (
-            <div className="pl-6 mt-2 space-y-2">
+            <div className="pl-6 mt-2 flex space-x-4">
               <div className="flex items-center space-x-2">
                 <Checkbox id="filter-politician-senate" onCheckedChange={(checked) => handleFilterOptionChange('showPoliticianSenate', !!checked)} />
                 <Label htmlFor="filter-politician-senate">Senator?</Label>
@@ -89,7 +90,7 @@ export function FindPantryView({ selectedCategories, onCategoryChange, filterOpt
             </div>
           )}
           {showCandidateTypes && (
-            <div className="pl-6 mt-2 space-y-2">
+            <div className="pl-6 mt-2 flex space-x-4">
               <div className="flex items-center space-x-2">
                 <Checkbox id="filter-candidate-senate" onCheckedChange={(checked) => handleFilterOptionChange('showCandidateSenate', !!checked)} />
                 <Label htmlFor="filter-candidate-senate" className="text-yellow-400 font-bold">Senator?</Label>
@@ -104,7 +105,7 @@ export function FindPantryView({ selectedCategories, onCategoryChange, filterOpt
 
         <div>
           <h4 className="font-medium mb-2">Country</h4>
-          <div className="max-h-24 overflow-y-auto space-y-2 p-2 border rounded-md">
+          <div className="max-h-20 overflow-y-auto space-y-2 p-2 border rounded-md">
             <RadioGroup value={selectedCountry || ''} onValueChange={handleCountryChange}>
               {sortedCountryList.map(country => (
                 <div key={country} className="flex items-center space-x-2">
