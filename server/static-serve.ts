@@ -1,20 +1,33 @@
+// server/static-serve.ts
 import path from 'path';
+import fs from 'fs';
 import express from 'express';
+import type { Express } from 'express';
 
 /**
- * Sets up static file serving for the Express app
- * @param app Express application instance
+ * Serve built frontend and provide SPA fallback.
+ * Works in both dev (process.cwd()/public) and production (dist/public when compiled to dist/server).
  */
-export function setupStaticServing(app: express.Application) {
-  // Serve static files from the public directory
-  app.use(express.static(path.join(process.cwd(), 'public')));
+export function setupStaticServing(app: Express) {
+  const publicDirFromDist = path.join(__dirname, '..', 'public');
+  const publicDirFromRoot = path.join(process.cwd(), 'public');
 
-  // For any other routes, serve the index.html file
-  app.get('/{*splat}', (req, res, next) => {
-    // Skip API routes
-    if (req.path.startsWith('/api/')) {
-      return next();
-    }
-    res.sendFile(path.join(process.cwd(), 'public', 'index.html'));
+  const publicDir = fs.existsSync(publicDirFromDist) ? publicDirFromDist : publicDirFromRoot;
+
+  // Serve static assets but let API routes pass through
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api/')) return next();
+    next();
+  });
+
+  app.use(express.static(publicDir));
+
+  // SPA fallback: serve index.html for non-API GET requests that didn't match a static asset
+  app.get('*', (req, res, next) => {
+    if (req.method !== 'GET' || req.path.startsWith('/api/')) return next();
+    const indexPath = path.join(publicDir, 'index.html');
+    res.sendFile(indexPath, (err) => {
+      if (err) next(err);
+    });
   });
 }
