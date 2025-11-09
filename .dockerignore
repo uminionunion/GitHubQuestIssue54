@@ -1,0 +1,47 @@
+# Dependencies - use npm ci instead
+node_modules/
+npm-debug.log
+package-lock.json
+
+# Build artifacts
+dist/
+build/
+
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Documentation
+README.md
+README-LOCAL.md
+README-DOCKER-VPS.md
+
+# Environment - don't include local env in image
+.env
+.env.local
+.env.*.local
+
+# Database - regenerate in container
+data/database.sqlite
+data/database.sqlite-shm
+data/database.sqlite-wal
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Tests
+*.test.ts
+*.spec.ts
+__tests__/
+
+# Logs
+logs/
+*.log
+yarn-error.log
+lerna-debug.log
