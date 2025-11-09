@@ -1,44 +1,39 @@
-# Build stage - compiles TypeScript and React
-FROM node:22-alpine as builder
+# Build stage - compiles TypeScript and frontend assets
+FROM node:22-alpine AS builder
 WORKDIR /app
 
-# Copy package files
+# Copy package manifests and install all deps for building
 COPY package*.json ./
-
-# Install all dependencies (needed for build)
 RUN npm ci
 
-# Copy source code
+# Copy source and build both frontend and backend
 COPY . .
-
-# Build both frontend and backend
 RUN npm run build
 
-# Production stage - runs the application
-FROM node:22-alpine
+# Production stage - small runtime image with only production deps
+FROM node:22-alpine AS runtime
 WORKDIR /app
 
-# Install tsx for TypeScript execution (if needed)
-RUN npm install -g tsx
+# Set runtime environment and port
+ENV NODE_ENV=production
+ENV PORT=4000
+ENV DATA_DIRECTORY=/app/data
 
-# Copy built files from builder
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/node_modules ./node_modules
+# Copy only package manifests and install production dependencies
 COPY --from=builder /app/package*.json ./
-COPY scripts ./scripts
-COPY tsconfig.server.json ./
+RUN npm ci --production
 
-# Create data directory for SQLite database
+# Copy runtime artifacts and scripts from builder
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/scripts ./scripts
+COPY --from=builder /app/tsconfig.server.json ./
+
+# Ensure data directory exists and is a volume for persistence
 RUN mkdir -p /app/data
 VOLUME ["/app/data"]
 
-# Expose production port
+# Expose the application port
 EXPOSE 4000
 
-# Set production environment variables
-ENV NODE_ENV=production
-ENV PORT=4000
-ENV DATA_DIRECTORY=/app/data/
-
-# Start application
-CMD ["node", "dist/server/index.js"]
+# Use the init script before starting the server; keep CMD shell form to run multiple commands
+CMD ["sh", "-c", "node scripts/init-db.cjs && node dist/server/index.js"]

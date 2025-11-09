@@ -1,9 +1,8 @@
 # Dependencies - use npm ci instead
 node_modules/
 npm-debug.log
-package-lock.json
 
-# Build artifacts
+# Build artifacts (we build inside Docker)
 dist/
 build/
 
@@ -22,12 +21,12 @@ README-DOCKER-VPS.md
 .env.local
 .env.*.local
 
-# Database - regenerate in container
+# Database - keep DB out of image; mounts persist data locally/in prod
 data/database.sqlite
 data/database.sqlite-shm
 data/database.sqlite-wal
 
-# IDE
+# IDE and editor files
 .vscode/
 .idea/
 *.swp
@@ -35,7 +34,7 @@ data/database.sqlite-wal
 *~
 .DS_Store
 
-# Tests
+# Tests and test artifacts
 *.test.ts
 *.spec.ts
 __tests__/
@@ -45,3 +44,11 @@ logs/
 *.log
 yarn-error.log
 lerna-debug.log
+
+# Ensure Docker uses package*.json and scripts/ and tsconfig.server.json
+!package.json
+!package-lock.json
+!package*.json
+!scripts/
+!scripts/init-db.cjs
+!tsconfig.server.json
