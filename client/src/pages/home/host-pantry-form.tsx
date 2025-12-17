@@ -182,7 +182,7 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
       </div>
       
       <DialogFooter className="flex-row justify-between items-center">
-        <a href="https://uminion.com/product/sister-union-13-2024-poster/" target="_blank" rel="noopener noreferrer" className="text-sm text-primary underline">
+        <a href="https://page001.uminion.com/product/poster-sister-union-13-unionevent13-2024classica/" target="_blank" rel="noopener noreferrer" className="text-sm text-primary underline">
           Get a Poster- Help UnionSupport#13 Do More
         </a>
         <Button type="submit">Submit</Button>
