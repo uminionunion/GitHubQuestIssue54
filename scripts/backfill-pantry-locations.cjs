@@ -58,7 +58,7 @@ function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
 
-function classifyAddress(address) {
+function classifyAddress(address, latitude, longitude) {
   const value = String(address || '').replace(/[.,]/g, ' ').replace(/\s+/g, ' ').trim();
   const postalCode = '(?:\\s+(?:\\d{5}(?:-\\d{4})?|[A-Z]\\d[A-Z]\\s?\\d[A-Z]\\d))?';
   const countrySuffix = '(?:\\s+(?:Canada|Mexico|USA|US|United States))?';
@@ -66,6 +66,20 @@ function classifyAddress(address) {
   for (const [stateKey, location] of mexicoOverlappingCodes) {
     const statePattern = new RegExp(`(?:^|[\\s,])${stateKey}${postalCode}\\s+Mexico$`, 'i');
     if (statePattern.test(value)) return { country: location[0], state: location[1] };
+  }
+
+  // BC and NL are shared abbreviations. Coordinates disambiguate Mexican
+  // Baja California/Nuevo Leon from Canadian British Columbia/Newfoundland.
+  const overlap = value.match(/(?:^|[\s,])(BC|NL)(?:\s+(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z]\s?\d[A-Z]\d))?$/i);
+  if (overlap && Number.isFinite(latitude)) {
+    if (latitude < 40) {
+      return overlap[1].toUpperCase() === 'BC'
+        ? { country: 'Mexico', state: 'Baja California' }
+        : { country: 'Mexico', state: 'Nuevo León' };
+    }
+    return overlap[1].toUpperCase() === 'BC'
+      ? { country: 'Canada', state: 'British Columbia' }
+      : { country: 'Canada', state: 'Newfoundland and Labrador' };
   }
 
   for (const [stateKey, location] of mexicoStateEntries.sort((left, right) => right[0].length - left[0].length)) {
@@ -97,12 +111,18 @@ try {
   if (!columns.includes('country')) database.exec('ALTER TABLE pantries ADD COLUMN country TEXT');
   if (!columns.includes('state')) database.exec('ALTER TABLE pantries ADD COLUMN state TEXT');
 
-  const rows = database.prepare('SELECT id, address, country, state FROM pantries WHERE country IS NULL OR country = ?').all('');
+  const rows = database.prepare(`
+    SELECT id, address, country, state, lat, lng
+    FROM pantries
+    WHERE country IS NULL OR country = '' OR country IN ('Canada', 'Mexico')
+  `).all();
   const update = database.prepare('UPDATE pantries SET country = ?, state = COALESCE(?, state) WHERE id = ?');
   const classify = database.transaction(() => {
     let classified = 0;
     for (const row of rows) {
-      const location = classifyAddress(row.address);
+      const hasAmbiguousCode = /(?:^|[\s,])(BC|NL)(?:\s+(?:\d{5}(?:-\d{4})?|[A-Z]\d[A-Z]\s?\d[A-Z]\d))?$/i.test(String(row.address || '').trim());
+      if (row.country && !hasAmbiguousCode) continue;
+      const location = classifyAddress(row.address, Number(row.lat), Number(row.lng));
       if (!location) continue;
       update.run(location.country, location.state, row.id);
       classified += 1;
