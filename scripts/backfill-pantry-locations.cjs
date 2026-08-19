@@ -34,12 +34,16 @@ const stateNames = {
   'SAN LUIS POTOSI': ['Mexico', 'San Luis Potosí'], SINALOA: ['Mexico', 'Sinaloa'], SONORA: ['Mexico', 'Sonora'],
   TABASCO: ['Mexico', 'Tabasco'], TAMAULIPAS: ['Mexico', 'Tamaulipas'], TLAXCALA: ['Mexico', 'Tlaxcala'],
   VERACRUZ: ['Mexico', 'Veracruz'], YUCATAN: ['Mexico', 'Yucatán'], ZACATECAS: ['Mexico', 'Zacatecas'],
-  AGS: ['Mexico', 'Aguascalientes'], BCS: ['Mexico', 'Baja California Sur'], CAM: ['Mexico', 'Campeche'],
-  CHIS: ['Mexico', 'Chiapas'], CHIH: ['Mexico', 'Chihuahua'], COAH: ['Mexico', 'Coahuila'],
+  AGS: ['Mexico', 'Aguascalientes'], BCS: ['Mexico', 'Baja California Sur'],
+  CAM: ['Mexico', 'Campeche'],
+  CHIS: ['Mexico', 'Chiapas'], CHIH: ['Mexico', 'Chihuahua'], COAH: ['Mexico', 'Coahuila'], COL: ['Mexico', 'Colima'],
   DGO: ['Mexico', 'Durango'], GTO: ['Mexico', 'Guanajuato'], GRO: ['Mexico', 'Guerrero'],
-  HGO: ['Mexico', 'Hidalgo'], MEX: ['Mexico', 'Mexico State'], MICH: ['Mexico', 'Michoacán'],
-  NAY: ['Mexico', 'Nayarit'], QRO: ['Mexico', 'Querétaro'], QROO: ['Mexico', 'Quintana Roo'],
-  SLP: ['Mexico', 'San Luis Potosí'], TAMPS: ['Mexico', 'Tamaulipas'], TLAX: ['Mexico', 'Tlaxcala'],
+  HGO: ['Mexico', 'Hidalgo'], JAL: ['Mexico', 'Jalisco'], CDMX: ['Mexico', 'Mexico City'], MEX: ['Mexico', 'Mexico State'], MICH: ['Mexico', 'Michoacán'],
+  MOR: ['Mexico', 'Morelos'], NAY: ['Mexico', 'Nayarit'], OAX: ['Mexico', 'Oaxaca'],
+  PUE: ['Mexico', 'Puebla'], QRO: ['Mexico', 'Querétaro'], QROO: ['Mexico', 'Quintana Roo'],
+  SLP: ['Mexico', 'San Luis Potosí'], SIN: ['Mexico', 'Sinaloa'], SON: ['Mexico', 'Sonora'], TAB: ['Mexico', 'Tabasco'],
+  TAM: ['Mexico', 'Tamaulipas'], TAMPS: ['Mexico', 'Tamaulipas'], TLAX: ['Mexico', 'Tlaxcala'],
+  VER: ['Mexico', 'Veracruz'], YUC: ['Mexico', 'Yucatán'], ZAC: ['Mexico', 'Zacatecas'],
 };
 
 const stateEntries = Object.entries(stateNames);
