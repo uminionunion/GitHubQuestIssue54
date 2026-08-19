@@ -34,9 +34,21 @@ const stateNames = {
   'SAN LUIS POTOSI': ['Mexico', 'San Luis Potosí'], SINALOA: ['Mexico', 'Sinaloa'], SONORA: ['Mexico', 'Sonora'],
   TABASCO: ['Mexico', 'Tabasco'], TAMAULIPAS: ['Mexico', 'Tamaulipas'], TLAXCALA: ['Mexico', 'Tlaxcala'],
   VERACRUZ: ['Mexico', 'Veracruz'], YUCATAN: ['Mexico', 'Yucatán'], ZACATECAS: ['Mexico', 'Zacatecas'],
+  AGS: ['Mexico', 'Aguascalientes'], BCS: ['Mexico', 'Baja California Sur'], CAM: ['Mexico', 'Campeche'],
+  CHIS: ['Mexico', 'Chiapas'], CHIH: ['Mexico', 'Chihuahua'], COAH: ['Mexico', 'Coahuila'],
+  DGO: ['Mexico', 'Durango'], GTO: ['Mexico', 'Guanajuato'], GRO: ['Mexico', 'Guerrero'],
+  HGO: ['Mexico', 'Hidalgo'], MEX: ['Mexico', 'Mexico State'], MICH: ['Mexico', 'Michoacán'],
+  NAY: ['Mexico', 'Nayarit'], QRO: ['Mexico', 'Querétaro'], QROO: ['Mexico', 'Quintana Roo'],
+  SLP: ['Mexico', 'San Luis Potosí'], TAMPS: ['Mexico', 'Tamaulipas'], TLAX: ['Mexico', 'Tlaxcala'],
 };
 
 const stateEntries = Object.entries(stateNames);
+const mexicoStateEntries = stateEntries.filter(([, location]) => location[0] === 'Mexico');
+const mexicoOverlappingCodes = [
+  ['BC', ['Mexico', 'Baja California']],
+  ['NL', ['Mexico', 'Nuevo León']],
+];
+const countryNames = ['Canada', 'Mexico', 'USA', 'US', 'United States'];
 
 function escapeRegExp(value) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -45,13 +57,25 @@ function escapeRegExp(value) {
 function classifyAddress(address) {
   const value = String(address || '').replace(/[.,]/g, ' ').replace(/\s+/g, ' ').trim();
   const postalCode = '(?:\\s+(?:\\d{5}(?:-\\d{4})?|[A-Z]\\d[A-Z]\\s?\\d[A-Z]\\d))?';
+  const countrySuffix = '(?:\\s+(?:Canada|Mexico|USA|US|United States))?';
 
-  for (const [stateKey, location] of stateEntries) {
-    const statePattern = new RegExp(`(?:^|[\\s,])${escapeRegExp(stateKey)}${postalCode}$`, 'i');
+  for (const [stateKey, location] of mexicoOverlappingCodes) {
+    const statePattern = new RegExp(`(?:^|[\\s,])${stateKey}${postalCode}\\s+Mexico$`, 'i');
     if (statePattern.test(value)) return { country: location[0], state: location[1] };
   }
 
-  const countryMatch = value.match(/(?:^|[\\s,])(USA|US|United States|Canada|Mexico)$/i);
+  for (const [stateKey, location] of mexicoStateEntries.sort((left, right) => right[0].length - left[0].length)) {
+    const statePattern = new RegExp(`(?:^|[\\s,])${escapeRegExp(stateKey)}${postalCode}\\s+Mexico$`, 'i');
+    if (statePattern.test(value)) return { country: location[0], state: location[1] };
+  }
+
+  for (const [stateKey, location] of stateEntries.sort((left, right) => right[0].length - left[0].length)) {
+    const statePattern = new RegExp(`(?:^|[\\s,])${escapeRegExp(stateKey)}${postalCode}${countrySuffix}$`, 'i');
+    if (statePattern.test(value)) return { country: location[0], state: location[1] };
+  }
+
+  const countryPattern = new RegExp(`(?:^|[\\s,])(${countryNames.map(escapeRegExp).join('|')})(?:$|[\\s,])`, 'i');
+  const countryMatch = value.match(countryPattern);
   if (countryMatch) {
     const country = countryMatch[1].toLowerCase() === 'canada'
       ? 'Canada'
