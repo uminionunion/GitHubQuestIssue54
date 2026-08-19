@@ -150,33 +150,19 @@ console.log(`Using normalized BASE_PATH = "${BASE_PATH}"`);
  */
 const router = express.Router();
 
-// ========== PRIMARY DATABASE ENDPOINTS (uminiondb) ==========
-
-router.get('/api/uminiondb/users', async (req, res) => {
-  try {
-    const connection = await getUminionConnection();
-    const [users] = await connection.query('SELECT * FROM users LIMIT 100');
-    connection.release();
-    res.json(users);
-  } catch (error) {
-    console.error('Error fetching from uminiondb:', error);
-    res.status(500).json({ error: 'Failed to fetch users' });
-  }
-});
-
-// ========== PANTRY DATABASE ENDPOINTS (dbFindApantry) ==========
+// ========== PANTRY DATABASE ENDPOINTS (SQLite) ==========
 
 // Get all pantries
 router.get('/api/pantries', async (req, res) => {
   try {
-    const connection = await getPantryConnection();
-    const [pantries] = await connection.query(
-      'SELECT id, name, address, city, state, zip_code, latitude, longitude, phone, email, website FROM pantries WHERE is_active = TRUE'
-    );
-    connection.release();
+    const pantries = await db
+      .selectFrom('pantries')
+      .selectAll()
+      .where('deleted', '=', 0)
+      .execute();
     res.json(pantries);
   } catch (error) {
-    console.error('Error fetching pantries:', error);
+    console.error('Error fetching pantries from SQLite:', error);
     res.status(500).json({ error: 'Failed to fetch pantries' });
   }
 });
@@ -184,21 +170,19 @@ router.get('/api/pantries', async (req, res) => {
 // Get single pantry by ID
 router.get('/api/pantries/:id', async (req, res) => {
   try {
-    const connection = await getPantryConnection();
-    const [pantries] = await connection.query(
-      'SELECT * FROM pantries WHERE id = ?',
-      [req.params.id]
-    );
-    connection.release();
-
-    if (Array.isArray(pantries) && pantries.length === 0) {
+    const pantry = await db
+      .selectFrom('pantries')
+      .selectAll()
+      .where('id', '=', Number(req.params.id))
+      .where('deleted', '=', 0)
+      .executeTakeFirst();
+    if (!pantry) {
       res.status(404).json({ error: 'Pantry not found' });
       return;
     }
-
-    res.json(Array.isArray(pantries) ? pantries[0] : null);
+    res.json(pantry);
   } catch (error) {
-    console.error('Error fetching pantry:', error);
+    console.error('Error fetching pantry from SQLite:', error);
     res.status(500).json({ error: 'Failed to fetch pantry' });
   }
 });
@@ -206,18 +190,15 @@ router.get('/api/pantries/:id', async (req, res) => {
 // Add new pantry
 router.post('/api/pantries', async (req, res) => {
   try {
-    const { name, address, city, state, zip_code, latitude, longitude, phone, email, website, hours_of_operation, description, services, requirements } = req.body;
-
-    const connection = await getPantryConnection();
-    await connection.query(
-      'INSERT INTO pantries (name, address, city, state, zip_code, latitude, longitude, phone, email, website, hours_of_operation, description, services, requirements) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [name, address, city, state, zip_code, latitude, longitude, phone, email, website, hours_of_operation, description, services, requirements]
-    );
-    connection.release();
-
-    res.status(201).json({ message: 'Pantry created successfully' });
+    const { name, address, country, state, notes, lat, lng, hours, type, repeating } = req.body;
+    const pantry = await db
+      .insertInto('pantries')
+      .values({ name, address, country, state, notes, lat, lng, hours, type, repeating, deleted: 0 })
+      .returningAll()
+      .executeTakeFirstOrThrow();
+    res.status(201).json(pantry);
   } catch (error) {
-    console.error('Error creating pantry:', error);
+    console.error('Error creating pantry in SQLite:', error);
     res.status(500).json({ error: 'Failed to create pantry' });
   }
 });
@@ -225,18 +206,15 @@ router.post('/api/pantries', async (req, res) => {
 // Update pantry
 router.put('/api/pantries/:id', async (req, res) => {
   try {
-    const { name, address, city, state, zip_code, latitude, longitude, phone, email, website, hours_of_operation, description, services, requirements } = req.body;
-
-    const connection = await getPantryConnection();
-    await connection.query(
-      'UPDATE pantries SET name = ?, address = ?, city = ?, state = ?, zip_code = ?, latitude = ?, longitude = ?, phone = ?, email = ?, website = ?, hours_of_operation = ?, description = ?, services = ?, requirements = ? WHERE id = ?',
-      [name, address, city, state, zip_code, latitude, longitude, phone, email, website, hours_of_operation, description, services, requirements, req.params.id]
-    );
-    connection.release();
-
+    const { name, address, country, state, notes, lat, lng, hours, type, repeating } = req.body;
+    await db
+      .updateTable('pantries')
+      .set({ name, address, country, state, notes, lat, lng, hours, type, repeating })
+      .where('id', '=', Number(req.params.id))
+      .execute();
     res.json({ message: 'Pantry updated successfully' });
   } catch (error) {
-    console.error('Error updating pantry:', error);
+    console.error('Error updating pantry in SQLite:', error);
     res.status(500).json({ error: 'Failed to update pantry' });
   }
 });
@@ -244,87 +222,27 @@ router.put('/api/pantries/:id', async (req, res) => {
 // Delete pantry
 router.delete('/api/pantries/:id', async (req, res) => {
   try {
-    const connection = await getPantryConnection();
-    await connection.query('DELETE FROM pantries WHERE id = ?', [req.params.id]);
-    connection.release();
-
+    await db
+      .updateTable('pantries')
+      .set({ deleted: 1 })
+      .where('id', '=', Number(req.params.id))
+      .execute();
     res.json({ message: 'Pantry deleted successfully' });
   } catch (error) {
-    console.error('Error deleting pantry:', error);
+    console.error('Error deleting pantry from SQLite:', error);
     res.status(500).json({ error: 'Failed to delete pantry' });
   }
 });
 
-// ========== POLITICIAN DATABASE ENDPOINTS (dbUnionPolitic) ==========
+// ========== POLITICAL DATA ENDPOINTS (SQLite) ==========
 
-// Get all politicians
 router.get('/api/politicians', async (req, res) => {
   try {
-    const connection = await getPoliticConnection();
-    const [politicians] = await connection.query(
-      'SELECT id, first_name, last_name, email, phone, office_seeking, district, city, state, website FROM politicians WHERE is_verified = TRUE'
-    );
-    connection.release();
+    const politicians = await db.selectFrom('politicians').selectAll().execute();
     res.json(politicians);
   } catch (error) {
-    console.error('Error fetching politicians:', error);
+    console.error('Error fetching politicians from SQLite:', error);
     res.status(500).json({ error: 'Failed to fetch politicians' });
-  }
-});
-
-// Get politician by ID
-router.get('/api/politicians/:id', async (req, res) => {
-  try {
-    const connection = await getPoliticConnection();
-    const [politicians] = await connection.query(
-      'SELECT * FROM politicians WHERE id = ?',
-      [req.params.id]
-    );
-    connection.release();
-
-    if (Array.isArray(politicians) && politicians.length === 0) {
-      res.status(404).json({ error: 'Politician not found' });
-      return;
-    }
-
-    res.json(Array.isArray(politicians) ? politicians[0] : null);
-  } catch (error) {
-    console.error('Error fetching politician:', error);
-    res.status(500).json({ error: 'Failed to fetch politician' });
-  }
-});
-
-// Register new politician
-router.post('/api/politicians', async (req, res) => {
-  try {
-    const { first_name, last_name, email, phone, office_seeking, district, city, state, bio, website, social_media_twitter, social_media_facebook, social_media_instagram } = req.body;
-
-    const connection = await getPoliticConnection();
-    await connection.query(
-      'INSERT INTO politicians (first_name, last_name, email, phone, office_seeking, district, city, state, bio, website, social_media_twitter, social_media_facebook, social_media_instagram) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-      [first_name, last_name, email, phone, office_seeking, district, city, state, bio, website, social_media_twitter, social_media_facebook, social_media_instagram]
-    );
-    connection.release();
-
-    res.status(201).json({ message: 'Politician registered successfully' });
-  } catch (error) {
-    console.error('Error registering politician:', error);
-    res.status(500).json({ error: 'Failed to register politician' });
-  }
-});
-
-// Get unverified politicians
-router.get('/api/politicians/unverified/all', async (req, res) => {
-  try {
-    const connection = await getPoliticConnection();
-    const [politicians] = await connection.query(
-      'SELECT * FROM politicians WHERE is_verified = FALSE'
-    );
-    connection.release();
-    res.json(politicians);
-  } catch (error) {
-    console.error('Error fetching unverified politicians:', error);
-    res.status(500).json({ error: 'Failed to fetch unverified politicians' });
   }
 });
 
@@ -359,18 +277,6 @@ router.get('/api/geocode', async (req, res) => {
   } catch (error) {
     console.error('Geocoding error:', error);
     res.status(500).json({ message: 'Geocoding service failed' });
-  }
-});
-
-// ========== SQLite Fallback Endpoints (optional) ==========
-
-router.get('/api/pantries-sqlite', async (req, res) => {
-  try {
-    const pantries = await db.selectFrom('pantries').selectAll().where('deleted', '=', 0).execute();
-    res.json(pantries);
-  } catch (error) {
-    console.error('Failed to get pantries from SQLite:', error);
-    res.status(500).json({ message: 'Failed to retrieve pantries' });
   }
 });
 

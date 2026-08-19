@@ -12,6 +12,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Pantry, PantryType, RepeatingType } from './types';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { countries } from '../pantry-feature/countries-data';
 import { Wand2 } from 'lucide-react';
 
 interface HostPantryFormProps {
@@ -39,6 +40,8 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
   const [addressForLookup, setAddressForLookup] = React.useState('');
   const [lat, setLat] = React.useState('');
   const [lng, setLng] = React.useState('');
+  const [country, setCountry] = React.useState('');
+  const [state, setState] = React.useState('');
   const [isLookingUp, setIsLookingUp] = React.useState(false);
 
   const handleGeoLookup = async () => {
@@ -71,11 +74,13 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
     const notes = formData.get('notes') as string;
     const type = formData.get('type') as PantryType;
     const repeating = formData.get('repeating') as RepeatingType;
+    const countryValue = formData.get('country') as string;
+    const stateValue = formData.get('state') as string;
     const latVal = parseFloat(lat);
     const lngVal = parseFloat(lng);
 
-    if (name && addressForLookup && hours && type && repeating && !isNaN(latVal) && !isNaN(lngVal)) {
-      onSubmit({ name, address: addressForLookup, notes, lat: latVal, lng: lngVal, hours, type, repeating });
+    if (name && addressForLookup && countryValue && hours && type && repeating && !isNaN(latVal) && !isNaN(lngVal)) {
+      onSubmit({ name, address: addressForLookup, country: countryValue, state: stateValue || undefined, notes, lat: latVal, lng: lngVal, hours, type, repeating });
     } else {
       alert('Please fill out all required fields correctly.');
     }
@@ -144,6 +149,22 @@ export function HostPantryForm({ onSubmit, isDialog = true }: HostPantryFormProp
           </Label>
           <Input id="hours" name="hours" placeholder="e.g. M-F 9am-5pm" className="col-span-3" required />
         </div>
+        <div className="grid grid-cols-4 items-center gap-4">
+          <Label htmlFor="pantry-country" className="text-right">Country</Label>
+          <select id="pantry-country" name="country" value={country} onChange={e => { setCountry(e.target.value); setState(''); }} className="col-span-3 h-10 rounded-md border bg-background px-3" required>
+            <option value="">Select a country</option>
+            {Object.keys(countries).sort().map(countryName => <option key={countryName} value={countryName}>{countryName}</option>)}
+          </select>
+        </div>
+        {country && countries[country].length > 0 && (
+          <div className="grid grid-cols-4 items-center gap-4">
+            <Label htmlFor="pantry-state" className="text-right">State/Province</Label>
+            <select id="pantry-state" name="state" value={state} onChange={e => setState(e.target.value)} className="col-span-3 h-10 rounded-md border bg-background px-3">
+              <option value="">Select a state/province</option>
+              {countries[country].map(stateName => <option key={stateName} value={stateName}>{stateName}</option>)}
+            </select>
+          </div>
+        )}
         <div className="grid grid-cols-4 items-start gap-4">
             <Label className="text-right pt-2">Type</Label>
             <RadioGroup name="type" className="col-span-3 grid grid-cols-2 gap-2" required>

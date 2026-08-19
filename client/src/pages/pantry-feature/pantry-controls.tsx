@@ -11,13 +11,17 @@ interface PantryControlsProps {
   activeView: 'find' | 'host' | 'details' | 'running';
   setActiveView: (view: 'find' | 'host' | 'details' | 'running') => void;
   selectedPantry: Pantry | null;
+  selectedCountry: string | null;
+  selectedState: string | null;
+  onCountryChange: (country: string | null) => void;
+  onStateChange: (state: string | null) => void;
   selectedCategories: Category[];
   onCategoryChange: (categories: Category[]) => void;
   filterOptions: any;
   setFilterOptions: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export function PantryControls({ addPantry, activeView, setActiveView, selectedPantry, selectedCategories, onCategoryChange, filterOptions, setFilterOptions }: PantryControlsProps) {
+export function PantryControls({ addPantry, activeView, setActiveView, selectedPantry, selectedCountry, selectedState, onCountryChange, onStateChange, selectedCategories, onCategoryChange, filterOptions, setFilterOptions }: PantryControlsProps) {
 
   const handleAddPantry = async (pantryData: Omit<Pantry, 'id' | 'deleted'>) => {
     const newPantry = await addPantry(pantryData);
@@ -29,7 +33,7 @@ export function PantryControls({ addPantry, activeView, setActiveView, selectedP
   const renderActiveView = () => {
     switch (activeView) {
       case 'find':
-        return <FindPantryView selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />;
+        return <FindPantryView selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} selectedCountry={selectedCountry} selectedState={selectedState} onCountryChange={onCountryChange} onStateChange={onStateChange} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />;
       case 'host':
         return <HostPantryForm onSubmit={handleAddPantry} isDialog={false} />;
       case 'details':
@@ -37,7 +41,7 @@ export function PantryControls({ addPantry, activeView, setActiveView, selectedP
       case 'running':
         return <RunningForOfficeForm />;
       default:
-        return <FindPantryView selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />;
+        return <FindPantryView selectedCategories={selectedCategories} onCategoryChange={onCategoryChange} selectedCountry={selectedCountry} selectedState={selectedState} onCountryChange={onCountryChange} onStateChange={onStateChange} filterOptions={filterOptions} setFilterOptions={setFilterOptions} />;
     }
   };
 

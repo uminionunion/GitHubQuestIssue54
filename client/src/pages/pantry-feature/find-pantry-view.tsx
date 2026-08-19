@@ -27,14 +27,15 @@ const sortedCountryList = [
 interface FindPantryViewProps {
   selectedCategories: Category[];
   onCategoryChange: (categories: Category[]) => void;
+  selectedCountry: string | null;
+  selectedState: string | null;
+  onCountryChange: (country: string | null) => void;
+  onStateChange: (state: string | null) => void;
   filterOptions: any;
   setFilterOptions: React.Dispatch<React.SetStateAction<any>>;
 }
 
-export function FindPantryView({ selectedCategories, onCategoryChange, filterOptions, setFilterOptions }: FindPantryViewProps) {
-  const [selectedCountry, setSelectedCountry] = React.useState<string | null>(null);
-  const [selectedState, setSelectedState] = React.useState<string | null>(null);
-  
+export function FindPantryView({ selectedCategories, onCategoryChange, selectedCountry, selectedState, onCountryChange, onStateChange, filterOptions, setFilterOptions }: FindPantryViewProps) {
   const showPoliticianTypes = selectedCategories.includes('politicians');
   const showCandidateTypes = selectedCategories.includes('candidates');
 
@@ -50,12 +51,12 @@ export function FindPantryView({ selectedCategories, onCategoryChange, filterOpt
   };
 
   const handleCountryChange = (country: string) => {
-    setSelectedCountry(country);
-    setSelectedState(null); // Reset state selection when country changes
+    onCountryChange(country);
+    onStateChange(null);
   };
 
   const handleStateChange = (state: string) => {
-    setSelectedState(state);
+    onStateChange(state);
   };
 
   const states = selectedCountry ? countries[selectedCountry] : [];

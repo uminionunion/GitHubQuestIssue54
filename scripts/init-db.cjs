@@ -16,6 +16,8 @@ try {
       id INTEGER PRIMARY KEY,
       name TEXT,
       address TEXT,
+      country TEXT,
+      state TEXT,
       notes TEXT,
       lat REAL,
       lng REAL,
@@ -46,6 +48,9 @@ try {
       lng REAL
     );
   `);
+  const pantryColumns = db.prepare('PRAGMA table_info(pantries)').all().map(column => column.name);
+  if (!pantryColumns.includes('country')) db.exec('ALTER TABLE pantries ADD COLUMN country TEXT');
+  if (!pantryColumns.includes('state')) db.exec('ALTER TABLE pantries ADD COLUMN state TEXT');
   console.log('DB initialized at', dbPath);
 } catch (err) {
   console.error('Failed to initialize DB:', err);

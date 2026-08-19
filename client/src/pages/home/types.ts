@@ -6,6 +6,8 @@ export interface Pantry {
   id: number;
   name: string;
   address: string;
+  country?: string;
+  state?: string;
   notes: string;
   lat: number;
   lng: number;
