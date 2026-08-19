@@ -17,7 +17,7 @@ export function TheFoodPantryFeature({ pantries, addPantry }: TheFoodPantryFeatu
   const [selectedPantry, setSelectedPantry] = React.useState<Pantry | null>(null);
   const [politicians, setPoliticians] = React.useState<Politician[]>([]);
   const [candidates, setCandidates] = React.useState<Candidate[]>([]);
-  const [selectedCountry, setSelectedCountry] = React.useState<string | null>(null);
+  const [selectedCountry, setSelectedCountry] = React.useState<string | null>('USA');
   const [selectedState, setSelectedState] = React.useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = React.useState<Category[]>(['food', 'clothing', 'resource', 'library']);
   const [filterOptions, setFilterOptions] = React.useState({
