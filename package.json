@@ -6,8 +6,8 @@
   "scripts": {
     "build": "vite build && tsc --project tsconfig.server.json",
     "start": "tsx watch scripts/dev.ts",
-    "start:prod": "node scripts/init-db.cjs && node dist/server/index.js",
-    "start:prod:foreground": "node scripts/init-db.cjs && node dist/server/index.js",
+    "start:prod": "node scripts/init-db.cjs && node scripts/backfill-pantry-locations.cjs && node dist/server/index.js",
+    "start:prod:foreground": "node scripts/init-db.cjs && node scripts/backfill-pantry-locations.cjs && node dist/server/index.js",
     "start:dev": "tsx watch scripts/dev.ts"
   },
   "dependencies": {

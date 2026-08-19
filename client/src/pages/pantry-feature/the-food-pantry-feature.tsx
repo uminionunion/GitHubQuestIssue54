@@ -17,6 +17,8 @@ export function TheFoodPantryFeature({ pantries, addPantry }: TheFoodPantryFeatu
   const [selectedPantry, setSelectedPantry] = React.useState<Pantry | null>(null);
   const [politicians, setPoliticians] = React.useState<Politician[]>([]);
   const [candidates, setCandidates] = React.useState<Candidate[]>([]);
+  const [selectedCountry, setSelectedCountry] = React.useState<string | null>(null);
+  const [selectedState, setSelectedState] = React.useState<string | null>(null);
   const [selectedCategories, setSelectedCategories] = React.useState<Category[]>(['food', 'clothing', 'resource', 'library']);
   const [filterOptions, setFilterOptions] = React.useState({
     showPoliticianSenate: false,
@@ -47,7 +49,12 @@ export function TheFoodPantryFeature({ pantries, addPantry }: TheFoodPantryFeatu
     setActiveView('details');
   };
 
-  const filteredPantries = pantries.filter(p => selectedCategories.includes(p.type));
+  const filteredPantries = pantries.filter(p => {
+    if (!selectedCountry) return false;
+    if (p.country !== selectedCountry) return false;
+    if (selectedState && p.state !== selectedState) return false;
+    return selectedCategories.includes(p.type);
+  });
   
   const filteredPoliticians = selectedCategories.includes('politicians') 
     ? politicians.filter(p => {
@@ -112,6 +119,10 @@ export function TheFoodPantryFeature({ pantries, addPantry }: TheFoodPantryFeatu
           activeView={activeView}
           setActiveView={setActiveView}
           selectedPantry={selectedPantry}
+            selectedCountry={selectedCountry}
+            selectedState={selectedState}
+            onCountryChange={setSelectedCountry}
+            onStateChange={setSelectedState}
           selectedCategories={selectedCategories}
           onCategoryChange={setSelectedCategories}
           filterOptions={filterOptions}
